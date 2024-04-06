@@ -6,14 +6,18 @@ import NoInvoice from "./components/NoInvoice";
 import INVOICE_DATA from "./data file/data.json";
 
 import Invoice from "./types/types";
+import { useState } from "react";
 
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 function App() {
+  const [noInvoice, setNoInvoice] = useState(true);
   function handleFilterClick() {
     console.log("works");
   }
-  const noInvoice = true;
+  function handleToggleList() {
+    noInvoice ? setNoInvoice(false) : setNoInvoice(true);
+  }
 
   return (
     <>
@@ -41,6 +45,12 @@ function App() {
                   <img src={plusIcon} alt="" className="w-3 h-3" />
                 </div>
                 New Invoice
+              </button>
+              <button
+                className=" flex items-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3"
+                onClick={handleToggleList}
+              >
+                Toggle List
               </button>
             </div>
           </div>
