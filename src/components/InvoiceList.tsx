@@ -29,7 +29,7 @@ const InvoiceList = ({
   return (
     <>
       <div className="flex w-screen justify-center mt-5 mb-5 box-border">
-        <div className="w-[70%] hover:w-[72%] flex justify-between bg-invoiceTab p-5 rounded-xl text-white transition-all max-sm:h-[200px]">
+        <div className="w-[70%] hover:w-[72%] flex justify-between bg-invoiceTab p-5 rounded-xl text-white transition-all max-sm:h-[200px] max-sm:w-[88%]">
           <div className="flex space-x-16 items-center max-sm:space-x-0 max-sm:flex-col max-sm:justify-between max-sm:items-start">
             <h1 className="font-bold">#{invoiceID}</h1>
             <p>Due {dueDate}</p>
