@@ -17,7 +17,7 @@ const InvoiceList = ({
 }: Props) => {
   return (
     <>
-      <div className="mt-6">
+      <div className="mt-10 mb-10">
         <div className="flex w-screen items-center justify-center  ">
           <div className="w-[70%] flex justify-between bg-invoiceTab p-8 rounded-xl text-white">
             <div className="flex space-x-14 items-center">

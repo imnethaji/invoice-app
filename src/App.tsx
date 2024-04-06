@@ -13,7 +13,7 @@ function App() {
   function handleFilterClick() {
     console.log("works");
   }
-  const list = false;
+  const noInvoice = true;
 
   return (
     <>
@@ -47,18 +47,20 @@ function App() {
         </div>
       </div>
 
-      {list && <NoInvoice />}
-
-      {invoiceData.map((item, index) => (
-        <InvoiceList
-          key={index}
-          invoiceID={item.id}
-          dueDate={item.paymentDue}
-          clientName={item.clientName}
-          total={item.total}
-          paymentStatus={item.status}
-        />
-      ))}
+      {noInvoice ? (
+        <NoInvoice />
+      ) : (
+        invoiceData.map((item, index) => (
+          <InvoiceList
+            key={index}
+            invoiceID={item.id}
+            dueDate={item.paymentDue}
+            clientName={item.clientName}
+            total={item.total}
+            paymentStatus={item.status}
+          />
+        ))
+      )}
     </>
   );
 }
