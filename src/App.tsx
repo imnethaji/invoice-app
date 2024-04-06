@@ -22,32 +22,38 @@ function App() {
   return (
     <>
       <div>
-        <div className="flex w-screen items-center mt-20 justify-center">
-          <div className="flex  w-[70%] justify-between">
+        <div className="flex w-screen items-center mt-20 justify-center ">
+          <div className="flex  w-[70%] justify-between max-sm:flex-col max-sm:items-center ">
             <div>
-              <div>
-                <h1 className="text-2xl font-bold text-white">Invoices</h1>
-                <p className="text-white text-xs">No invoices</p>
+              <div className="max-sm:text-center max-sm:space-y-5">
+                <h1 className="text-2xl font-bold text-white max-sm:text-5xl">
+                  Invoices
+                </h1>
+                <p className="text-white text-xs max-sm:text-xl">
+                  {noInvoice
+                    ? `No invoices`
+                    : `There are ${invoiceData.length} invoices available`}
+                </p>
               </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center max-sm:flex-col max-sm:space-y-6">
               <p
                 onClick={handleFilterClick}
-                className="flex  items-center text-white font-bold cursor-pointer"
+                className="flex  items-center text-white font-bold cursor-pointer max-sm:mt-6"
               >
                 Filter by status{" "}
                 <span className="ml-5">
                   <img src={arrowIcon} alt="" />
                 </span>
               </p>
-              <button className=" flex items-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3">
+              <button className=" flex items-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3 max-sm:ml-0">
                 <div className="w-10 h-10 mr-3 flex items-center justify-center bg-white rounded-full">
                   <img src={plusIcon} alt="" className="w-3 h-3" />
                 </div>
                 New Invoice
               </button>
               <button
-                className=" flex items-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3"
+                className=" flex items-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3 max-sm:ml-0"
                 onClick={handleToggleList}
               >
                 Toggle List
