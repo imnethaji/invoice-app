@@ -1,5 +1,5 @@
 // Importing default colors from tailwind css object
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
 const colors = require("tailwindcss/colors");
 
 /** @type {import('tailwindcss').Config} */
@@ -17,6 +17,7 @@ export default {
         emerald: colors.emerald,
         indigo: colors.indigo,
         yellow: colors.yellow,
+        invoiceTab: "#1E2139",
       },
     },
   },

@@ -1,12 +1,19 @@
 import "./App.css";
 import plusIcon from "./assets/icon-plus.svg";
 import arrowIcon from "./assets/icon-arrow-down.svg";
-import emptyIllustration from "./assets/illustration-empty.svg";
+import InvoiceList from "./components/InvoiceList";
+import NoInvoice from "./components/NoInvoice";
+import INVOICE_DATA from "./data file/data.json";
+
+import Invoice from "./types/types";
+
+const invoiceData: Invoice[] = INVOICE_DATA;
 
 function App() {
   function handleFilterClick() {
     console.log("works");
   }
+  const list = false;
 
   return (
     <>
@@ -39,16 +46,19 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="w-screen h-[800px] flex flex-col items-center justify-center">
-        <img src={emptyIllustration} alt="" className="w-50" />
-        <h1 className="text-white text-2xl font-bold mt-14">
-          There is nothing here
-        </h1>
-        <p className="text-white text-center mt-7">
-          Create an invoice by clicking the <br />
-          <span className="font-bold">New Invoice</span> button and get started
-        </p>
-      </div>
+
+      {list && <NoInvoice />}
+
+      {invoiceData.map((item, index) => (
+        <InvoiceList
+          key={index}
+          invoiceID={item.id}
+          dueDate={item.paymentDue}
+          clientName={item.clientName}
+          total={item.total}
+          paymentStatus={item.status}
+        />
+      ))}
     </>
   );
 }
