@@ -24,7 +24,7 @@ function App() {
     <>
       <div>
         <div className="flex w-screen items-center mt-20 justify-center">
-          <div className="flex  w-[1100px] justify-between max-sm:flex-col max-sm:items-center ">
+          <div className="flex  w-[70%] justify-between max-sm:flex-col max-sm:items-center ">
             <div>
               <div className="max-sm:text-center max-sm:space-y-5">
                 <h1 className="text-2xl font-bold text-white max-sm:text-5xl">
