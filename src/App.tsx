@@ -1,12 +1,13 @@
 import "./App.css";
 import plusIcon from "./assets/icon-plus.svg";
 import arrowIcon from "./assets/icon-arrow-down.svg";
-import InvoiceList from "./components/InvoiceList";
-import NoInvoice from "./components/NoInvoice";
+// import InvoiceList from "./components/InvoiceList";
+// import NoInvoice from "./components/NoInvoice";
 import INVOICE_DATA from "./data file/data.json";
 
 import Invoice from "./types/types";
 import { useState } from "react";
+import InvoiceDetails from "./components/InvoiceDetails";
 
 const invoiceData: Invoice[] = INVOICE_DATA;
 
@@ -22,7 +23,7 @@ function App() {
   return (
     <>
       <div>
-        <div className="flex w-screen items-center mt-20 justify-center ">
+        <div className="flex w-screen items-center mt-20 justify-center">
           <div className="flex  w-[70%] justify-between max-sm:flex-col max-sm:items-center ">
             <div>
               <div className="max-sm:text-center max-sm:space-y-5">
@@ -53,17 +54,17 @@ function App() {
                 New Invoice
               </button>
               <button
-                className=" flex items-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3 max-sm:ml-0"
+                className=" w-28 flex items-center justify-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3 max-sm:ml-0"
                 onClick={handleToggleList}
               >
-                Toggle List
+                {!noInvoice ? "Hide" : "Show"} List
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {noInvoice ? (
+      {/* {noInvoice ? (
         <NoInvoice />
       ) : (
         invoiceData.map((item, index) => (
@@ -76,7 +77,8 @@ function App() {
             paymentStatus={item.status}
           />
         ))
-      )}
+      )} */}
+      <InvoiceDetails invoiceData={invoiceData} />
     </>
   );
 }

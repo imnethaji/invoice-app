@@ -11,6 +11,7 @@ export default {
         transparent: "transparent",
         current: "currentColor",
         buttonPurple: "#7C5DFA",
+        cardBgBlue: "#1E2139",
         black: colors.black,
         white: colors.white,
         gray: colors.gray,
