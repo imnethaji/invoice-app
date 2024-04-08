@@ -9,13 +9,12 @@ type InvoiceDetailsProps = {
 const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
   const [index, setIndex] = useState(0);
 
-  const invoiceButtonClass =
-    "bg-buttonPurple text-white rounded-full ml-4 font-bold px-8 py-4";
+  const invoiceButtonClass = "text-white rounded-full ml-4 font-bold px-8 py-4";
   return (
     <div className="w-[1100px] invoiceOpen flex flex-col items-center justify-between m-auto mt-10 ">
       <div className="navigationButtonContainer w-full flex justify-between mb-2">
         <button
-          className="p-2 bg-buttonPurple text-white w-24 font-bold rounded-full"
+          className="p-2 bg-purpleButton text-white w-24 font-bold rounded-full"
           onClick={() => {
             if (index >= 1) setIndex((n) => n - 1);
           }}
@@ -23,7 +22,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
           Previous
         </button>
         <button
-          className="p-2 bg-buttonPurple text-white w-24 font-bold rounded-full"
+          className="p-2 bg-purpleButton text-white w-24 font-bold rounded-full"
           onClick={() => {
             if (index < 6) setIndex((n) => n + 1);
           }}
@@ -49,9 +48,15 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
           </button>
         </div>
         <div className="invoiceButtons">
-          <button className={invoiceButtonClass}>Edit</button>
-          <button className={invoiceButtonClass}>Delete</button>
-          <button className={invoiceButtonClass}>Mark as Paid</button>
+          <button className={`${invoiceButtonClass} bg-editButton`}>
+            Edit
+          </button>
+          <button className={`${invoiceButtonClass} bg-deleteButton`}>
+            Delete
+          </button>
+          <button className={`${invoiceButtonClass} bg-purpleButton`}>
+            Mark as Paid
+          </button>
         </div>
       </div>
       <div className="invoiceDetailsContainer w-[100%] text-white bg-cardBgBlue mt-6 rounded-xl p-14">

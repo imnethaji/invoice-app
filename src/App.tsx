@@ -47,14 +47,14 @@ function App() {
                   <img src={arrowIcon} alt="" />
                 </span>
               </p>
-              <button className=" flex items-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3 max-sm:ml-0">
+              <button className=" flex items-center font-bold text-white bg-purpleButton rounded-full ml-5 p-2 px-3 max-sm:ml-0">
                 <div className="w-10 h-10 mr-3 flex items-center justify-center bg-white rounded-full">
                   <img src={plusIcon} alt="" className="w-3 h-3" />
                 </div>
                 New Invoice
               </button>
               <button
-                className=" w-28 flex items-center justify-center font-bold text-white bg-buttonPurple rounded-full ml-5 p-2 px-3 max-sm:ml-0"
+                className=" w-28 flex items-center justify-center font-bold text-white bg-purpleButton rounded-full ml-5 p-2 px-3 max-sm:ml-0"
                 onClick={handleToggleList}
               >
                 {!noInvoice ? "Hide" : "Show"} List
