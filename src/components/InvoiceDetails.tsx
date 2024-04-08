@@ -27,6 +27,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
   const invoiceButtonClass = "text-white rounded-full ml-4 font-bold px-8 py-4";
   return (
     <div className="w-[1100px] invoiceOpen flex flex-col items-center justify-between m-auto mt-10 ">
+      {/* Navigation Button Starts here */}
       <div className="navigationButtonContainer w-full flex justify-between mb-2">
         <button
           className="p-2 bg-purpleButton text-white w-24 font-bold rounded-full"
@@ -51,6 +52,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
           <span className="mt-1">Go back</span>
         </button>
       </div>
+      {/* Invoice Header with button controls starts here*/}
       <div className="invoiceHeader w-[100%] bg-cardBgBlue flex justify-between py-4 px-6 rounded-xl">
         <div className="flex items-center">
           <p className="text-white">Status</p>
@@ -74,6 +76,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
           </button>
         </div>
       </div>
+      {/* Invoice Detail container starts */}
       <div className="invoiceDetailsContainer w-[100%] text-white bg-cardBgBlue mt-6 rounded-xl p-14">
         <div className="id w-[100%]">
           <div className="detailsRow1 w-[100%] flex justify-between">
@@ -88,8 +91,8 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
               <p className="">{invoiceData[index].senderAddress.country}</p>
             </div>
           </div>
-          <div className="detailsRow2 flex space-x-36 mt-4">
-            <div className="row2col1 flex flex-col justify-between">
+          <div className="detailsRow2 flex space-x-24 mt-4">
+            <div className="row2col1 w-[150px] flex flex-col justify-between">
               <div>
                 <p>Invoice Date</p>
                 <p className="font-bold mt-2">
@@ -103,7 +106,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
                 </p>
               </div>
             </div>
-            <div className=" h-[140px]">
+            <div className="h-[160px] w-[150px]">
               <p>Bill To</p>
               <p className="font-bold mb-2 mt-2">
                 {invoiceData[index].clientName}
