@@ -12,7 +12,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
   const invoiceButtonClass =
     "bg-buttonPurple text-white rounded-full ml-4 font-bold px-8 py-4";
   return (
-    <div className="w-[70%] invoiceOpen flex flex-col items-center justify-between m-auto mt-10 ">
+    <div className="w-[1100px] invoiceOpen flex flex-col items-center justify-between m-auto mt-10 ">
       <div className="navigationButtonContainer w-full flex justify-between mb-2">
         <button
           className="p-2 bg-buttonPurple text-white w-24 font-bold rounded-full"
