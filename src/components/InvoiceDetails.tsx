@@ -7,6 +7,21 @@ type InvoiceDetailsProps = {
 };
 
 const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
+  const formatDate = (dateString: string) => {
+    // Create a new Date object from the dateString
+    const date = new Date(dateString);
+
+    // Options for formatting the date
+    const options = {
+      day: "2-digit" as const,
+      month: "short" as const,
+      year: "numeric" as const,
+    };
+
+    // Format the date using toLocaleDateString
+    return date.toLocaleDateString("en-GB", options);
+  };
+
   const [index, setIndex] = useState(0);
 
   const invoiceButtonClass = "text-white rounded-full ml-4 font-bold px-8 py-4";
@@ -77,12 +92,14 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
             <div className="row2col1 flex flex-col justify-between">
               <div>
                 <p>Invoice Date</p>
-                <p className="font-bold mt-2">{invoiceData[index].createdAt}</p>
+                <p className="font-bold mt-2">
+                  {formatDate(invoiceData[index].createdAt)}
+                </p>
               </div>
               <div>
                 <p>Payment Due</p>
                 <p className="font-bold mt-2">
-                  {invoiceData[index].paymentDue}
+                  {formatDate(invoiceData[index].paymentDue)}
                 </p>
               </div>
             </div>
