@@ -6,6 +6,7 @@ interface Props {
   clientName: string;
   total: number;
   paymentStatus: string;
+  onOpen: () => void;
 }
 
 const InvoiceList = ({
@@ -14,6 +15,7 @@ const InvoiceList = ({
   clientName,
   total,
   paymentStatus,
+  onOpen,
 }: Props) => {
   let buttonClass = "bg-paidButton ml-10 w-[120px] p-3 rounded";
   const titlePaymentStatus: string = paymentStatus.toUpperCase();
@@ -43,7 +45,10 @@ const InvoiceList = ({
             >
               {titlePaymentStatus}
             </button>
-            <div className="p-2 ml-4 max-sm:ml-0 w-10 h-10 flex items-center justify-center hover:bg-white hover:cursor-pointer rounded-full transition-colors hover:bg-opacity-70">
+            <div
+              onClick={onOpen}
+              className="p-2 ml-4 max-sm:ml-0 w-10 h-10 flex items-center justify-center hover:bg-white hover:cursor-pointer rounded-full transition-colors hover:bg-opacity-70"
+            >
               <img className=" w-3" src={rightArrow} alt="" />
             </div>
           </div>

@@ -7,7 +7,6 @@ import Invoice from "./types/types";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 import InvoiceHeader from "./components/InvoiceHeader";
-import InvoiceDetails from "./components/InvoiceDetails";
 
 function App() {
   const [noInvoice, setNoInvoice] = useState(true);
@@ -16,6 +15,9 @@ function App() {
   }
   function handleToggleList() {
     noInvoice ? setNoInvoice(false) : setNoInvoice(true);
+  }
+  function handleOpenClick() {
+    console.log("Works");
   }
   return (
     <>
@@ -37,10 +39,10 @@ function App() {
             clientName={item.clientName}
             total={item.total}
             paymentStatus={item.status}
+            onOpen={handleOpenClick}
           />
         ))
       )}
-      <InvoiceDetails invoiceData={invoiceData} />
     </>
   );
 }
