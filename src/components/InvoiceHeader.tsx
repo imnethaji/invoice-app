@@ -1,12 +1,21 @@
+import { MouseEventHandler } from "react";
 import plusIcon from "../assets/icon-plus.svg";
 import arrowIcon from "../assets/icon-arrow-down.svg";
 import Invoice from "../types/types";
 
 interface InvoiceHeaderProps {
   invoiceData: Invoice[];
+  noInvoice: boolean;
+  onFilter: MouseEventHandler<HTMLParagraphElement>;
+  onToggle: () => void;
 }
 
-const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({ invoiceData }) => {
+const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
+  invoiceData,
+  noInvoice,
+  onFilter,
+  onToggle,
+}) => {
   return (
     <div className="flex w-screen items-center mt-20 justify-center">
       <div className="flex  w-[70%] justify-between max-sm:flex-col max-sm:items-center ">
@@ -24,7 +33,7 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({ invoiceData }) => {
         </div>
         <div className="flex items-center max-sm:flex-col max-sm:space-y-6">
           <p
-            onClick={handleFilterClick}
+            onClick={onFilter}
             className="flex  items-center text-white font-bold cursor-pointer max-sm:mt-6"
           >
             Filter by status{" "}
@@ -40,7 +49,7 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({ invoiceData }) => {
           </button>
           <button
             className=" w-28 flex items-center justify-center font-bold text-white bg-purpleButton rounded-full ml-5 p-2 px-3 max-sm:ml-0"
-            onClick={handleToggleList}
+            onClick={onToggle}
           >
             {!noInvoice ? "Hide" : "Show"} List
           </button>

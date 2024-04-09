@@ -19,7 +19,12 @@ function App() {
   }
   return (
     <>
-      <InvoiceHeader invoiceData={invoiceData} />
+      <InvoiceHeader
+        invoiceData={invoiceData}
+        onToggle={handleToggleList}
+        onFilter={handleFilterClick}
+        noInvoice={noInvoice}
+      />
 
       {noInvoice ? (
         <NoInvoice />
