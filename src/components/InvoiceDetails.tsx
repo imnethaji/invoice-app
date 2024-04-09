@@ -7,6 +7,20 @@ type InvoiceDetailsProps = {
 };
 
 const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
+  const [index, setIndex] = useState(0);
+  const buttonClass =
+    "flex items-center  justify-center ml-10 w-[120px] p-3 rounded bg-opacity-20 font-bold text-md";
+  let statusColor = "";
+  const invoiceButtonClass = "text-white rounded-full ml-4 font-bold px-8 py-4";
+  // Color changing depending on paid status
+  if (invoiceData[index].status === "paid") {
+    statusColor = "bg-paidButton text-paidButton";
+  } else if (invoiceData[index].status === "pending") {
+    statusColor = "bg-pendingButton text-pendingButton";
+  } else {
+    statusColor = "bg-draftButton text-draftButton";
+  }
+
   const formatDate = (dateString: string) => {
     // Create a new Date object from the dateString
     const date = new Date(dateString);
@@ -22,9 +36,6 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
     return date.toLocaleDateString("en-GB", options);
   };
 
-  const [index, setIndex] = useState(0);
-
-  const invoiceButtonClass = "text-white rounded-full ml-4 font-bold px-8 py-4";
   return (
     <div className="w-[70%] invoiceOpen flex flex-col items-center justify-between m-auto mt-10 ">
       {/* Navigation Button Starts here */}
@@ -56,11 +67,8 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
       <div className="invoiceHeader w-[100%] bg-cardBgBlue flex justify-between py-4 px-6 rounded-xl">
         <div className="flex items-center">
           <p className="text-white">Status</p>
-          <button
-            disabled
-            className={`bg-pendingButton flex items-center justify-center text-pendingButton ml-10 w-[120px] p-3 rounded font-bold bg-opacity-20 max-sm:ml-0`}
-          >
-            <div className="w-2 h-2 bg-pendingButton mr-2 rounded-full"></div>
+          <button disabled className={`${buttonClass} ${statusColor}`}>
+            <div className={`${statusColor} w-2 h-2 mr-2 rounded-full`}></div>
             {invoiceData[index].status}
           </button>
         </div>
