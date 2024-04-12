@@ -7,6 +7,8 @@ import Invoice from "./types/types";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 import InvoiceHeader from "./components/InvoiceHeader";
+import InvoiceDetails from "./components/InvoiceDetails";
+import Form from "./components/Form";
 
 function App() {
   const [noInvoice, setNoInvoice] = useState(true);
@@ -43,6 +45,8 @@ function App() {
           />
         ))
       )}
+      <InvoiceDetails invoiceData={invoiceData} />
+      <Form />
     </>
   );
 }

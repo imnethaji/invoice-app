@@ -24,6 +24,7 @@ export default {
         deleteButton: "#EC5757",
         purpleButton: "#7C5DFA",
         cardBgBlue: "#1E2139",
+        formCardBg: "#141625",
       },
     },
   },
