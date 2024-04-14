@@ -37,7 +37,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
   };
 
   return (
-    <div className="w-[70%] invoiceOpen flex flex-col items-center justify-between m-auto mt-10 ">
+    <div className="w-[730px] invoiceOpen flex flex-col items-center justify-between m-auto mt-10 ">
       {/* Navigation Button Starts here */}
       <div className="navigationButtonContainer w-full flex justify-between mb-2">
         <button
@@ -99,8 +99,8 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
               <p className="">{invoiceData[index].senderAddress.country}</p>
             </div>
           </div>
-          <div className="detailsRow2 flex space-x-24 mt-4">
-            <div className="row2col1 w-[150px] flex flex-col justify-between">
+          <div className="detailsRow2 flex mt-4">
+            <div className="row2col1 w-[200px] flex flex-col justify-between">
               <div>
                 <p>Invoice Date</p>
                 <p className="font-bold mt-2">
@@ -114,7 +114,7 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
                 </p>
               </div>
             </div>
-            <div className="h-[160px] w-[150px]">
+            <div className="h-[160px] w-[210px]">
               <p>Bill To</p>
               <p className="font-bold mb-2 mt-2">
                 {invoiceData[index].clientName}
@@ -128,6 +128,37 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
               <p>Sent to</p>
               <p className="font-bold mt-2">{invoiceData[index].clientEmail}</p>
             </div>
+          </div>
+        </div>
+        <div className="itemListContainer bg-[#252945] p-10 pb-0 px-0 mt-10 rounded-xl">
+          <div className="tableHeader grid grid-cols-4 mb-10 px-10 text-sm">
+            <div>Item Name</div>
+            <div className="text-center">QTY.</div>
+            <div className="text-right">Price</div>
+            <div className="text-right">Total</div>
+          </div>
+          <ul>
+            {invoiceData[index].items.map((item, index) => (
+              <li
+                key={index}
+                className="tableRow grid grid-cols-4 text-right mb-10 px-10 font-bold"
+              >
+                <div className="text-left">{item.name}</div>
+                <div className="text-center">{item.quantity}</div>
+                <div>&#8377; {item.price}</div>
+                <div>&#8377; {item.total}</div>
+              </li>
+            ))}
+          </ul>
+          <div className="tableFooter bg-[#0C0E16] flex justify-between items-center px-10 py-7 rounded-xl">
+            <p className="text-sm">Amount Due</p>
+            <h1 className="text-right font-bold text-2xl">
+              &#8377;{" "}
+              {invoiceData[index].items.reduce(
+                (acc, item) => (acc += item.total),
+                0
+              )}
+            </h1>
           </div>
         </div>
       </div>

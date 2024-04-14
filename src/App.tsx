@@ -1,5 +1,5 @@
 import "./App.css";
-import axios from "axios";
+// import axios from "axios";
 import { useState, useRef } from "react";
 import InvoiceList from "./components/InvoiceList";
 import NoInvoice from "./components/NoInvoice";
@@ -14,9 +14,9 @@ import Form from "./components/Form";
 function App() {
   const [noInvoice, setNoInvoice] = useState(true);
   const modalRef = useRef();
-  const apiUrl = "http://localhost:9000/";
+  // const apiUrl = "http://localhost:9000/";
   // Create an empty object to store the fetched data
-  const dataObject = {};
+  // const dataObject = {};
 
   function handleFilterClick() {
     console.log("works");
@@ -33,17 +33,17 @@ function App() {
     }
   }
 
-  axios
-    .get(apiUrl)
-    .then((response) => {
-      // Upon successful response, store the fetched data in the object
-      dataObject.data = response.data;
-      console.log("Data fetched successfully:", dataObject);
-    })
-    .catch((error) => {
-      // Handle any errors that occur during the request
-      console.error("Error fetching data:", error.message);
-    });
+  // axios
+  //   .get(apiUrl)
+  //   .then((response) => {
+  //     // Upon successful response, store the fetched data in the object
+  //     dataObject.data = response.data;
+  //     console.log("Data fetched successfully:", dataObject);
+  //   })
+  //   .catch((error) => {
+  //     // Handle any errors that occur during the request
+  //     console.error("Error fetching data:", error.message);
+  //   });
 
   return (
     <>
@@ -71,7 +71,7 @@ function App() {
       )}
       <InvoiceDetails invoiceData={invoiceData} />
       <button onClick={showModal}>Click to show Modal</button>
-      <Form ref={modalRef} />
+      <Form />
     </>
   );
 }
