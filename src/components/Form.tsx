@@ -56,12 +56,15 @@ const Form: React.FC = () => {
     field?: keyof AddressData
   ) => {
     const { value } = e.target;
-    console.log(value);
-    console.log(section);
     if (field) {
-      setFormData((prevData) => ({ ...prevData, [section]: [field] }));
+      setFormData((prevData: FormData) => ({
+        ...prevData,
+        [section]: { ...(prevData[section] as AddressData), [field]: value },
+      }));
+      console.log(formData);
     } else {
-      console.log("field is not present");
+      setFormData((prevData) => ({ ...prevData, [section]: value }));
+      console.log(formData);
     }
   };
 
