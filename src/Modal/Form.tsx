@@ -25,7 +25,12 @@ interface FormData {
   items: Item[];
 }
 
-const Form: React.FC = () => {
+interface formModalProp {
+  isOpen: boolean;
+  closeModal: () => void;
+}
+
+const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
   const dateNow = new Date().toISOString().slice(0, 10);
   const inputClasses = "bg-cardBgBlue h-14 rounded text-white pl-4 mb-6 mt-2";
   const [formData, setFormData] = useState<FormData>({
@@ -113,7 +118,7 @@ const Form: React.FC = () => {
     <dialog
       className="w-[700px] mb-10 bg-[#10111d] p-10 rounded-xl mt-10"
       onSubmit={handleSubmit}
-      open
+      open={isOpen}
     >
       <h1 className="font-bold text-[#DFE3FA] text-2xl">New Invoice</h1>
       <div className="Address">
@@ -357,7 +362,10 @@ const Form: React.FC = () => {
         </div>
       </div>
       <div className="buttonContainer flex items-center justify-between mt-10">
-        <button className="flex items-center justify-center font-bold text-[#7E88C3] bg-white rounded-full w-28 py-4 px-3 max-sm:ml-0">
+        <button
+          onClick={closeModal}
+          className="flex items-center justify-center font-bold text-[#7E88C3] bg-white rounded-full w-28 py-4 px-3 max-sm:ml-0"
+        >
           Discard
         </button>
         <div className="flex items-center">
@@ -367,6 +375,7 @@ const Form: React.FC = () => {
           <button
             className="flex items-center font-bold text-white bg-purpleButton rounded-full ml-2 py-4 px-7 max-sm:ml-0"
             type="submit"
+            onClick={() => console.log(formData)}
           >
             Save & Send
           </button>

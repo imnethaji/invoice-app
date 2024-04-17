@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Invoice from "../types/types";
 import leftArrow from "../assets/icon-arrow-left.svg";
+import Form from "../Modal/Form";
 
 type InvoiceDetailsProps = {
   invoiceData: Invoice[];
@@ -8,6 +9,7 @@ type InvoiceDetailsProps = {
 
 const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
   const [index, setIndex] = useState(0);
+  const [isEditingOn, setIsEditingOn] = useState(false);
   const buttonClass =
     "flex items-center  justify-center ml-10 w-[120px] p-3 rounded bg-opacity-20 font-bold text-md";
   let statusColor = "";
@@ -35,10 +37,18 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
     // Format the date using toLocaleDateString
     return date.toLocaleDateString("en-GB", options);
   };
+  function handleOpenModal() {
+    setIsEditingOn(true);
+  }
+
+  function handleCloseModal() {
+    setIsEditingOn(false);
+  }
 
   return (
-    <div className="w-[730px] invoiceOpen flex flex-col items-center justify-between m-auto mt-10 ">
+    <div className="invoiceContainer overflow-hidden w-[730px] flex flex-col items-center justify-between m-auto mt-10 ">
       {/* Navigation Button Starts here */}
+      <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
       <div className="navigationButtonContainer w-full flex justify-between mb-2">
         <button
           className="p-2 bg-purpleButton text-white w-24 font-bold rounded-full"
@@ -73,7 +83,10 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
           </button>
         </div>
         <div className="invoiceButtons">
-          <button className={`${invoiceButtonClass} bg-editButton`}>
+          <button
+            onClick={handleOpenModal}
+            className={`${invoiceButtonClass} bg-editButton`}
+          >
             Edit
           </button>
           <button className={`${invoiceButtonClass} bg-deleteButton`}>

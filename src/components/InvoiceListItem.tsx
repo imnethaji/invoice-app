@@ -9,7 +9,7 @@ interface Props {
   onOpen: () => void;
 }
 
-const InvoiceList = ({
+const InvoiceListItem = ({
   invoiceID,
   dueDate,
   clientName,
@@ -58,4 +58,4 @@ const InvoiceList = ({
   );
 };
 
-export default InvoiceList;
+export default InvoiceListItem;

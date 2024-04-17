@@ -1,15 +1,13 @@
 import "./App.css";
 // import axios from "axios";
 import { useState } from "react";
-import InvoiceList from "./components/InvoiceList";
+import InvoiceListItem from "./components/InvoiceListItem";
 import NoInvoice from "./components/NoInvoice";
 import INVOICE_DATA from "./data file/data.json";
 import Invoice from "./types/types";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 import InvoiceHeader from "./components/InvoiceHeader";
-import InvoiceDetails from "./components/InvoiceDetails";
-import Form from "./components/Form";
 
 function App() {
   const [noInvoice, setNoInvoice] = useState(true);
@@ -37,7 +35,7 @@ function App() {
         <NoInvoice />
       ) : (
         invoiceData.map((item, index) => (
-          <InvoiceList
+          <InvoiceListItem
             key={index}
             invoiceID={item.id}
             dueDate={item.paymentDue}
@@ -48,8 +46,6 @@ function App() {
           />
         ))
       )}
-      <InvoiceDetails invoiceData={invoiceData} />
-      <Form />
     </>
   );
 }
