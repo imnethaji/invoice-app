@@ -30,9 +30,22 @@ interface formModalProp {
   closeModal: () => void;
 }
 
+interface functionProp {
+  handleSubmit: (item: number) => number;
+}
+
+const implementation: functionProp = {
+  handleSubmit: (item) => {
+    return item;
+  },
+};
+
+implementation.handleSubmit(6);
+
 const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
   const dateNow = new Date().toISOString().slice(0, 10);
   const inputClasses = "bg-cardBgBlue h-14 rounded text-white pl-4 mb-6 mt-2";
+
   const [formData, setFormData] = useState<FormData>({
     // Initialize form data
     senderAddress: {
