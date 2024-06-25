@@ -9,7 +9,7 @@ const invoiceData: Invoice[] = INVOICE_DATA;
 import InvoiceHeader from "./components/InvoiceHeader";
 
 function App() {
-  const [noInvoice, setNoInvoice] = useState(() => {
+  const [noInvoice] = useState(() => {
     // Initialize noInvoice based on whether invoiceData is empty
     return invoiceData.length === 0;
   });
