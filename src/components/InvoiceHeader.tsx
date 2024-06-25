@@ -7,14 +7,12 @@ interface InvoiceHeaderProps {
   invoiceData: Invoice[];
   noInvoice: boolean;
   onFilter: MouseEventHandler<HTMLParagraphElement>;
-  onToggle: () => void;
 }
 
 const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   invoiceData,
   noInvoice,
   onFilter,
-  onToggle,
 }) => {
   return (
     <div className="flex w-screen items-center mt-20 justify-center">
@@ -46,12 +44,6 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
               <img src={plusIcon} alt="" className="w-3 h-3" />
             </div>
             New Invoice
-          </button>
-          <button
-            className=" w-28 flex items-center justify-center font-bold text-white bg-purpleButton rounded-full ml-5 p-2 px-3 max-sm:ml-0"
-            onClick={onToggle}
-          >
-            {!noInvoice ? "Hide" : "Show"} List
           </button>
         </div>
       </div>

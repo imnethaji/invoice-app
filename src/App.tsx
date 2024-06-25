@@ -6,27 +6,22 @@ import NoInvoice from "./components/NoInvoice";
 import INVOICE_DATA from "./data file/data.json";
 import Invoice from "./types/types";
 const invoiceData: Invoice[] = INVOICE_DATA;
-
 import InvoiceHeader from "./components/InvoiceHeader";
 
 function App() {
-  const [noInvoice, setNoInvoice] = useState(true);
+  const [noInvoice] = useState(() => {
+    // Initialize noInvoice based on whether invoiceData is empty
+    return invoiceData.length === 0;
+  });
 
   function handleFilterClick() {
     console.log("works");
-  }
-  function handleToggleList() {
-    noInvoice ? setNoInvoice(false) : setNoInvoice(true);
-  }
-  function handleOpenClick() {
-    console.log("Works");
   }
 
   return (
     <>
       <InvoiceHeader
         invoiceData={invoiceData}
-        onToggle={handleToggleList}
         onFilter={handleFilterClick}
         noInvoice={noInvoice}
       />
@@ -42,7 +37,6 @@ function App() {
             clientName={item.clientName}
             total={item.total}
             paymentStatus={item.status}
-            onOpen={handleOpenClick}
           />
         ))
       )}
