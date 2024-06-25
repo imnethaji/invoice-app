@@ -2,13 +2,19 @@ import { useState } from "react";
 import Invoice from "../types/types";
 import leftArrow from "../assets/icon-arrow-left.svg";
 import Form from "../Modal/Form";
+import INVOICE_DATA from "../data file/data.json";
+import { Link, useParams } from "react-router-dom";
+const invoiceData: Invoice[] = INVOICE_DATA;
 
-type InvoiceDetailsProps = {
-  invoiceData: Invoice[];
-};
+// type InvoiceDetailsProps = {
+//   invoiceData: Invoice[];
+// };
 
-const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
-  const [index, setIndex] = useState(0);
+const InvoiceDetails = () => {
+  const { invoiceId } = useParams();
+  const invoiceIndex = invoiceData.findIndex((item) => item.id === invoiceId);
+
+  const index = invoiceIndex;
   const [isEditingOn, setIsEditingOn] = useState(false);
   const buttonClass =
     "flex items-center  justify-center ml-10 w-[120px] p-3 rounded bg-opacity-20 font-bold text-md";
@@ -49,29 +55,13 @@ const InvoiceDetails: React.FC<InvoiceDetailsProps> = ({ invoiceData }) => {
     <div className="invoiceContainer overflow-hidden w-[730px] flex flex-col items-center justify-between m-auto mt-10 ">
       {/* Navigation Button Starts here */}
       <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
-      <div className="navigationButtonContainer w-full flex justify-between mb-2">
-        <button
-          className="p-2 bg-purpleButton text-white w-24 font-bold rounded-full"
-          onClick={() => {
-            if (index >= 1) setIndex((n) => n - 1);
-          }}
-        >
-          Previous
-        </button>
-        <button
-          className="p-2 bg-purpleButton text-white w-24 font-bold rounded-full"
-          onClick={() => {
-            if (index < 6) setIndex((n) => n + 1);
-          }}
-        >
-          Next
-        </button>
-      </div>
       <div className="w-full flex mb-10">
-        <button className="text-white flex mt-6 justify-center items-center">
-          <img src={leftArrow} alt="" className="mr-4" />
-          <span className="mt-1">Go back</span>
-        </button>
+        <Link to="/">
+          <button className="text-white flex mt-6 justify-center items-center">
+            <img src={leftArrow} alt="" className="mr-4" />
+            <span className="mt-1">Go back</span>
+          </button>
+        </Link>
       </div>
       {/* Invoice Header with button controls starts here*/}
       <div className="invoiceHeader w-[100%] bg-cardBgBlue flex justify-between py-4 px-6 rounded-xl">
