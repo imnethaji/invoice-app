@@ -1,4 +1,5 @@
 import rightArrow from "../assets/icon-arrow-right.svg";
+import { Link } from "react-router-dom";
 
 interface Props {
   invoiceID: string;
@@ -6,7 +7,6 @@ interface Props {
   clientName: string;
   total: number;
   paymentStatus: string;
-  onOpen: () => void;
 }
 
 const InvoiceListItem = ({
@@ -15,7 +15,6 @@ const InvoiceListItem = ({
   clientName,
   total,
   paymentStatus,
-  onOpen,
 }: Props) => {
   let buttonClass = "bg-paidButton ml-10 w-[120px] p-3 rounded";
   const titlePaymentStatus: string = paymentStatus.toUpperCase();
@@ -45,12 +44,11 @@ const InvoiceListItem = ({
             >
               {titlePaymentStatus}
             </button>
-            <div
-              onClick={onOpen}
-              className="p-2 ml-4 max-sm:ml-0 w-10 h-10 flex items-center justify-center hover:bg-white hover:cursor-pointer rounded-full transition-colors hover:bg-opacity-70"
-            >
-              <img className=" w-3" src={rightArrow} alt="" />
-            </div>
+            <Link to={`/invoices/${invoiceID}`}>
+              <div className="p-2 ml-4 max-sm:ml-0 w-10 h-10 flex items-center justify-center hover:bg-white hover:cursor-pointer rounded-full transition-colors hover:bg-opacity-70">
+                <img className=" w-3" src={rightArrow} alt="" />
+              </div>
+            </Link>
           </div>
         </div>
       </div>
