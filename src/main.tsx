@@ -6,8 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import InvoiceDetails from "./layout/InvoiceDetails.tsx";
 
 const router = createBrowserRouter([
-  { path: "/invoices", element: <App /> },
-  { path: "/invoices/:invoiceId", element: <InvoiceDetails /> },
+  { path: "/", element: <App /> },
+  { path: "/:invoiceId", element: <InvoiceDetails /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

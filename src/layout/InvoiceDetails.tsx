@@ -56,7 +56,7 @@ const InvoiceDetails = () => {
       {/* Navigation Button Starts here */}
       <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
       <div className="w-full flex mb-10">
-        <Link to="/invoices">
+        <Link to="/">
           <button className="text-white flex mt-6 justify-center items-center">
             <img src={leftArrow} alt="" className="mr-4" />
             <span className="mt-1">Go back</span>

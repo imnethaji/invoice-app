@@ -44,7 +44,7 @@ const InvoiceListItem = ({
             >
               {titlePaymentStatus}
             </button>
-            <Link to={`/invoices/${invoiceID}`}>
+            <Link to={`/${invoiceID}`}>
               <div className="p-2 ml-4 max-sm:ml-0 w-10 h-10 flex items-center justify-center hover:bg-white hover:cursor-pointer rounded-full transition-colors hover:bg-opacity-70">
                 <img className=" w-3" src={rightArrow} alt="" />
               </div>
