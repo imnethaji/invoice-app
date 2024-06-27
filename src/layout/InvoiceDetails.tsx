@@ -13,16 +13,20 @@ const invoiceData: Invoice[] = INVOICE_DATA;
 const InvoiceDetails = () => {
   const { invoiceId } = useParams();
   const invoiceIndex = invoiceData.findIndex((item) => item.id === invoiceId);
-
   const index = invoiceIndex;
   const [isEditingOn, setIsEditingOn] = useState(false);
+  const [isPaid, setIsPaid] = useState(
+    invoiceData[index].status === "paid" ? true : false
+  );
+  let paidButtonClass = `bg-purpleButton`;
   const buttonClass =
     "flex items-center  justify-center ml-10 w-[120px] p-3 rounded bg-opacity-20 font-bold text-md";
   let statusColor = "";
   const invoiceButtonClass = "text-white rounded-full ml-4 font-bold px-8 py-4";
   // Color changing depending on paid status
-  if (invoiceData[index].status === "paid") {
+  if (isPaid) {
     statusColor = "bg-paidButton text-paidButton";
+    paidButtonClass = "bg-editButton text-grey";
   } else if (invoiceData[index].status === "pending") {
     statusColor = "bg-pendingButton text-pendingButton";
   } else {
@@ -49,6 +53,11 @@ const InvoiceDetails = () => {
 
   function handleCloseModal() {
     setIsEditingOn(false);
+  }
+
+  function updatePaidStatus() {
+    invoiceData[index].status = "paid";
+    setIsPaid(true);
   }
 
   return (
@@ -82,7 +91,11 @@ const InvoiceDetails = () => {
           <button className={`${invoiceButtonClass} bg-deleteButton`}>
             Delete
           </button>
-          <button className={`${invoiceButtonClass} bg-purpleButton`}>
+          <button
+            className={`${invoiceButtonClass} ${paidButtonClass}`}
+            disabled={isPaid}
+            onClick={updatePaidStatus}
+          >
             Mark as Paid
           </button>
         </div>
