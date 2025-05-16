@@ -1,7 +1,8 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
 import plusIcon from "../assets/icon-plus.svg";
 import arrowIcon from "../assets/icon-arrow-down.svg";
 import Invoice from "../types/types";
+import Form from "../Modal/Form";
 
 interface InvoiceHeaderProps {
   invoiceData: Invoice[];
@@ -14,8 +15,15 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   noInvoice,
   onFilter,
 }) => {
+  const [isEditingOn, setIsEditingOn] = useState(false);
+
+  function handleNewInvoice() {
+    isEditingOn == false ? setIsEditingOn(true) : setIsEditingOn(false);
+  }
+
   return (
     <div className="flex w-screen items-center mt-20 justify-center">
+      <Form isOpen={isEditingOn} closeModal={handleNewInvoice} />
       <div className="flex  w-[70%] justify-between max-sm:flex-col max-sm:items-center ">
         <div>
           <div className="max-sm:text-center max-sm:space-y-5">
@@ -39,7 +47,10 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
               <img src={arrowIcon} alt="" />
             </span>
           </p>
-          <button className=" flex items-center font-bold text-white bg-purpleButton rounded-full ml-5 p-2 px-3 max-sm:ml-0">
+          <button
+            className=" flex items-center font-bold text-white bg-purpleButton rounded-full ml-5 p-2 px-3 max-sm:ml-0"
+            onClick={handleNewInvoice}
+          >
             <div className="w-10 h-10 mr-3 flex items-center justify-center bg-white rounded-full">
               <img src={plusIcon} alt="" className="w-3 h-3" />
             </div>

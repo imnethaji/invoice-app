@@ -7,12 +7,12 @@ import InvoiceDetails from "./layout/InvoiceDetails.tsx";
 import PageNotFound from "./layout/PageNotFound.tsx";
 
 const router = createBrowserRouter([
-  { path: "/", Component: App },
+  { path: "/", Component: App, errorElement: <PageNotFound /> },
   {
     path: "/:invoiceId",
     element: <InvoiceDetails />,
+    errorElement: <PageNotFound />,
   },
-  { path: "*", element: <PageNotFound /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -92,13 +92,15 @@ const InvoiceDetails = () => {
           <button className={`${invoiceButtonClass} bg-deleteButton`}>
             Delete
           </button>
-          <button
-            className={`${invoiceButtonClass} ${paidButtonClass}`}
-            disabled={isPaid}
-            onClick={updatePaidStatus}
-          >
-            Mark as Paid
-          </button>
+          <Link to="/">
+            <button
+              className={`${invoiceButtonClass} ${paidButtonClass}`}
+              disabled={isPaid}
+              onClick={updatePaidStatus}
+            >
+              Mark as Paid
+            </button>
+          </Link>
         </div>
       </div>
       {/* Invoice Detail container starts */}
