@@ -2,12 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import InvoiceDetails from "./layout/InvoiceDetails.tsx";
+import PageNotFound from "./layout/PageNotFound.tsx";
 
 const router = createBrowserRouter([
-  { path: "/", element: <App /> },
-  { path: "/:invoiceId", element: <InvoiceDetails /> },
+  { path: "/", Component: App },
+  {
+    path: "/:invoiceId",
+    element: <InvoiceDetails />,
+  },
+  { path: "*", element: <PageNotFound /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
