@@ -64,8 +64,7 @@ const InvoiceDetails = () => {
 
   return (
     <div className="invoiceContainer overflow-hidden w-[730px] flex flex-col items-center justify-between m-auto mt-10 ">
-      {/* Navigation Button Starts here */}
-
+      {/* Modal portal to inject the modal on root element */}
       <ModalPortal>
         <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
       </ModalPortal>
