@@ -63,13 +63,13 @@ const InvoiceDetails = () => {
   }
 
   return (
-    <div className="invoiceContainer overflow-hidden w-[730px] flex flex-col items-center justify-between m-auto mt-10 ">
+    <div className="invoiceContainer w-[730px] flex flex-col items-center justify-between my-5 mx-auto">
       {/* Modal portal to inject the modal on root element */}
       <ModalPortal>
         <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
       </ModalPortal>
 
-      <div className="w-full flex mb-10">
+      <div className="w-full flex mb-8">
         <Link to="/">
           <button className="text-white flex mt-6 justify-center items-center">
             <img src={leftArrow} alt="" className="mr-4" />
