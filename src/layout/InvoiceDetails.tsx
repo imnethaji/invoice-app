@@ -4,6 +4,7 @@ import leftArrow from "../assets/icon-arrow-left.svg";
 import Form from "../Modal/Form";
 import INVOICE_DATA from "../data file/data.json";
 import { Link, useParams } from "react-router";
+import ModalPortal from "../components/ModalPortal";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 // type InvoiceDetailsProps = {
@@ -64,7 +65,11 @@ const InvoiceDetails = () => {
   return (
     <div className="invoiceContainer overflow-hidden w-[730px] flex flex-col items-center justify-between m-auto mt-10 ">
       {/* Navigation Button Starts here */}
-      <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
+
+      <ModalPortal>
+        <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
+      </ModalPortal>
+
       <div className="w-full flex mb-10">
         <Link to="/">
           <button className="text-white flex mt-6 justify-center items-center">
