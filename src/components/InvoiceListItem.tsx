@@ -1,5 +1,5 @@
 import rightArrow from "../assets/icon-arrow-right.svg";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 interface Props {
   invoiceID: string;

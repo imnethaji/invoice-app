@@ -3,7 +3,7 @@ import Invoice from "../types/types";
 import leftArrow from "../assets/icon-arrow-left.svg";
 import Form from "../Modal/Form";
 import INVOICE_DATA from "../data file/data.json";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 // type InvoiceDetailsProps = {
@@ -56,6 +56,7 @@ const InvoiceDetails = () => {
   }
 
   function updatePaidStatus() {
+    if (invoiceData[index].status == "draft") return;
     invoiceData[index].status = "paid";
     setIsPaid(true);
   }
@@ -91,13 +92,15 @@ const InvoiceDetails = () => {
           <button className={`${invoiceButtonClass} bg-deleteButton`}>
             Delete
           </button>
-          <button
-            className={`${invoiceButtonClass} ${paidButtonClass}`}
-            disabled={isPaid}
-            onClick={updatePaidStatus}
-          >
-            Mark as Paid
-          </button>
+          <Link to="/">
+            <button
+              className={`${invoiceButtonClass} ${paidButtonClass}`}
+              disabled={isPaid}
+              onClick={updatePaidStatus}
+            >
+              Mark as Paid
+            </button>
+          </Link>
         </div>
       </div>
       {/* Invoice Detail container starts */}
