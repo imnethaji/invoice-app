@@ -10,6 +10,7 @@ import { motion, Variants } from "framer-motion";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 function App() {
+  const [isFilterOn, setIsFilterOn] = useState(false);
   const [noInvoice] = useState(() => {
     return invoiceData.length === 0;
   });
@@ -42,7 +43,7 @@ function App() {
   };
 
   function handleFilterClick() {
-    console.log("works");
+    isFilterOn == false ? setIsFilterOn(true) : setIsFilterOn(false);
   }
 
   return (
@@ -51,6 +52,7 @@ function App() {
         invoiceData={invoiceData}
         onFilter={handleFilterClick}
         noInvoice={noInvoice}
+        isFilterOn={isFilterOn}
       />
 
       {noInvoice ? (

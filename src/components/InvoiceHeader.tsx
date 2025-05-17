@@ -1,25 +1,41 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useState, useEffect } from "react";
 import plusIcon from "../assets/icon-plus.svg";
 import arrowIcon from "../assets/icon-arrow-down.svg";
 import Invoice from "../types/types";
 import Form from "../Modal/Form";
+import FilterOptions from "./FilterOptions";
 
 interface InvoiceHeaderProps {
   invoiceData: Invoice[];
   noInvoice: boolean;
   onFilter: MouseEventHandler<HTMLParagraphElement>;
+  isFilterOn: boolean;
 }
 
 const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   invoiceData,
   noInvoice,
   onFilter,
+  isFilterOn,
 }) => {
   const [isEditingOn, setIsEditingOn] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
   function handleNewInvoice() {
-    isEditingOn == false ? setIsEditingOn(true) : setIsEditingOn(false);
+    setIsEditingOn(!isEditingOn);
   }
+  useEffect(() => {
+    console.log(selectedFilters);
+  }, [selectedFilters]);
+
+  const handleFilterOption = (status: string) => {
+    setSelectedFilters((prev) => {
+      if (prev.includes(status)) {
+        return prev.filter((item) => item !== status);
+      }
+      return [...prev, status];
+    });
+  };
 
   return (
     <div className="flex w-screen items-center mt-20 justify-center">
@@ -37,7 +53,7 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
             </p>
           </div>
         </div>
-        <div className="flex items-center max-sm:flex-col max-sm:space-y-6">
+        <div className="flex items-center relative max-sm:flex-col max-sm:space-y-6">
           <p
             onClick={onFilter}
             className="flex  items-center text-white font-bold cursor-pointer max-sm:mt-6"
@@ -46,7 +62,9 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
             <span className="ml-5">
               <img src={arrowIcon} alt="" />
             </span>
+            {isFilterOn && <FilterOptions onOptionClick={handleFilterOption} />}
           </p>
+
           <button
             className=" flex items-center font-bold text-white bg-purpleButton rounded-full ml-5 p-2 px-3 max-sm:ml-0"
             onClick={handleNewInvoice}
