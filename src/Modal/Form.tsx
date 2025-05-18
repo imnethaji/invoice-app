@@ -1,72 +1,72 @@
 import deleteBin from "../assets/icon-delete.svg";
 import React, { useState } from "react";
+import Invoice from "../types/types";
 
-interface Item {
-  itemName: string;
-  qty: string;
-  price: string;
+export interface Item {
+  itemName?: string;
+  quantity?: string;
+  price?: string;
 }
 
-interface AddressData {
-  streetAddress: string;
-  city: string;
-  postCode: string;
-  country: string;
+export interface AddressData {
+  street?: string;
+  city?: string;
+  postCode?: string;
+  country?: string;
 }
 
-interface FormData {
-  senderAddress: AddressData;
-  clientAddress: AddressData;
-  clientName: string;
-  clientEmail: string;
-  issueDate: string;
-  paymentTerms: string;
-  projectDescription: string;
-  items: Item[];
+export interface FormData {
+  id?: string;
+  senderAddress?: AddressData;
+  clientAddress?: AddressData;
+  clientName?: string;
+  clientEmail?: string;
+  createdAt?: string;
+  paymentTerms?: number;
+  description?: string;
+  items?: Item[];
 }
 
 interface formModalProp {
   isOpen: boolean;
   closeModal: () => void;
+  invoiceData?: Invoice | FormData;
+  mode: "new" | "edit";
 }
 
-interface functionProp {
-  handleSubmit: (item: number) => number;
-}
-
-const implementation: functionProp = {
-  handleSubmit: (item) => {
-    return item;
-  },
-};
-
-implementation.handleSubmit(6);
-
-const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
+const Form: React.FC<formModalProp> = ({
+  isOpen,
+  closeModal,
+  invoiceData,
+  mode,
+}) => {
   const dateNow = new Date().toISOString().slice(0, 10);
   const inputClasses = "bg-cardBgBlue h-14 rounded text-white pl-4 mb-6 mt-2";
 
-  const [formData, setFormData] = useState<FormData>({
-    // Initialize form data
+  const defaultFormData: FormData = {
     senderAddress: {
-      streetAddress: "",
+      street: "",
       city: "",
       postCode: "",
       country: "",
     },
     clientAddress: {
-      streetAddress: "",
+      street: "",
       city: "",
       postCode: "",
       country: "",
     },
     clientName: "",
     clientEmail: "",
-    issueDate: dateNow,
-    paymentTerms: "",
-    projectDescription: "",
-    items: [{ itemName: "", qty: "", price: "" }],
-  });
+    createdAt: dateNow,
+    paymentTerms: 30,
+    description: "",
+    items: [{ itemName: "", quantity: "", price: "" }],
+  };
+
+  const [formData, setFormData] = useState<FormData>(
+    (invoiceData as FormData) || defaultFormData
+  );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -79,10 +79,8 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
         ...prevData,
         [section]: { ...(prevData[section] as AddressData), [field]: value },
       }));
-      console.log(formData);
     } else {
       setFormData((prevData) => ({ ...prevData, [section]: value }));
-      console.log(formData);
     }
   };
 
@@ -108,12 +106,12 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
   const addNewItem = () => {
     setFormData((prevData) => ({
       ...prevData,
-      items: [...prevData.items, { itemName: "", qty: "", price: "" }],
+      items: [...prevData.items, { itemName: "", quantity: "", price: "" }],
     }));
   };
 
   const deleteItemRow = (index: number) => {
-    if (formData.items.length !== 1) {
+    if (formData.items?.length !== 1) {
       setFormData((prevData) => ({
         ...prevData,
         items: [
@@ -125,6 +123,16 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (mode === "new") {
+      // call function to create invoice
+      // await createInvoice(formData);
+    } else {
+      // call function to update invoice
+      // await updateInvoice(formData);
+    }
+
+    closeModal(); // or navigate back
   };
 
   return (
@@ -134,7 +142,9 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
           className="w-[700px] mb-10 bg-[#10111d] p-10 rounded-xl mt-10"
           onSubmit={handleSubmit}
         >
-          <h1 className="font-bold text-[#DFE3FA] text-2xl">New Invoice</h1>
+          <h1 className="font-bold text-[#DFE3FA] text-2xl">
+            {mode === "edit" ? `#${formData.id}` : "New Invoice"}
+          </h1>
           <div className="Address">
             <h1 className="font-bold text-purpleButton mb-4 mt-10">
               Bill From
@@ -150,10 +160,8 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
               type="text"
               name="streetAddress"
               id="streetAddress"
-              value={formData.senderAddress.streetAddress}
-              onChange={(e) =>
-                handleChange(e, "senderAddress", "streetAddress")
-              }
+              value={formData.senderAddress?.street}
+              onChange={(e) => handleChange(e, "senderAddress", "street")}
             />
             <br />
             <div className="flex justify-between w-full">
@@ -166,7 +174,7 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                   type="text"
                   name="city"
                   id="city"
-                  value={formData.senderAddress.city}
+                  value={formData.senderAddress?.city}
                   onChange={(e) => handleChange(e, "senderAddress", "city")}
                 />
               </div>
@@ -176,10 +184,10 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                 </label>
                 <input
                   className={inputClasses}
-                  type="number"
+                  type="text"
                   name="postCode"
                   id="postCode"
-                  value={formData.senderAddress.postCode}
+                  value={formData.senderAddress?.postCode}
                   onChange={(e) => handleChange(e, "senderAddress", "postCode")}
                 />
               </div>
@@ -192,7 +200,7 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                   type="text"
                   name="country"
                   id="country"
-                  value={formData.senderAddress.country}
+                  value={formData.senderAddress?.country}
                   onChange={(e) => handleChange(e, "senderAddress", "country")}
                 />
               </div>
@@ -230,10 +238,8 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
               type="text"
               name="streetAddress"
               id="streetAddress"
-              value={formData.clientAddress.streetAddress}
-              onChange={(e) =>
-                handleChange(e, "clientAddress", "streetAddress")
-              }
+              value={formData.clientAddress?.street}
+              onChange={(e) => handleChange(e, "clientAddress", "street")}
             />
             <br />
             <div className="flex justify-between">
@@ -246,7 +252,7 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                   type="text"
                   name="city"
                   id="city"
-                  value={formData.clientAddress.city}
+                  value={formData.clientAddress?.city}
                   onChange={(e) => handleChange(e, "clientAddress", "city")}
                 />
               </div>
@@ -256,10 +262,10 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                 </label>
                 <input
                   className={inputClasses}
-                  type="number"
+                  type="text"
                   name="postCode"
                   id="postCode"
-                  value={formData.clientAddress.postCode}
+                  value={formData.clientAddress?.postCode}
                   onChange={(e) => handleChange(e, "clientAddress", "postCode")}
                 />
               </div>
@@ -272,7 +278,7 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                   type="text"
                   name="country"
                   id="country"
-                  value={formData.clientAddress.country}
+                  value={formData.clientAddress?.country}
                   onChange={(e) => handleChange(e, "clientAddress", "country")}
                 />
               </div>
@@ -287,8 +293,8 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                   type="date"
                   name="issueDate"
                   id="issueDate"
-                  value={formData.issueDate}
-                  onChange={(e) => handleChange(e, "issueDate")}
+                  value={formData.createdAt}
+                  onChange={(e) => handleChange(e, "createdAt")}
                 />
               </div>
               <div className="w-1/2 ml-4">
@@ -300,10 +306,12 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                   name="paymentTerms"
                   id="paymentTerms"
                   onChange={(e) => handleChange(e, "paymentTerms")}
+                  value={formData.paymentTerms}
                 >
                   <option value="">Select</option>
                   <option value="30">30 Days</option>
                   <option value="15">15 Days</option>
+                  <option value="7">7 Days</option>
                   <option value="5">5 Days</option>
                   <option value="1">1 Day</option>
                 </select>
@@ -321,8 +329,8 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
               type="text"
               name="projectDescription"
               id="projectDescription"
-              value={formData.projectDescription}
-              onChange={(e) => handleChange(e, "projectDescription")}
+              value={formData.description}
+              onChange={(e) => handleChange(e, "description")}
             />
             <br />
           </div>
@@ -338,13 +346,13 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
               <h1></h1>
             </div>
             <ul>
-              {formData.items.map((_, index: number) => (
+              {formData.items?.map((_, index: number) => (
                 <li key={index} className="grid grid-cols-8">
                   <input
                     className={`${inputClasses} col-span-3 mr-4`}
                     type="text"
                     name={`itemName${index}`}
-                    value={formData.items[index].itemName}
+                    value={formData.items?.[index]?.itemName}
                     onChange={(e) => handleItemChange(e, index, "itemName")}
                   />
 
@@ -352,27 +360,27 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
                     className={`${inputClasses} mr-4`}
                     type="number"
                     name={`qty${index}`}
-                    value={formData.items[index].qty}
-                    onChange={(e) => handleItemChange(e, index, "qty")}
+                    value={formData.items?.[index]?.quantity}
+                    onChange={(e) => handleItemChange(e, index, "quantity")}
                   />
 
                   <input
                     className={`${inputClasses} col-span-2 mr-4`}
                     type="number"
                     name={`price${index}`}
-                    value={formData.items[index].price}
+                    value={formData.items?.[index].price}
                     onChange={(e) => handleItemChange(e, index, "price")}
                   />
                   <div className="flex items-center mb-6 mt-2">
                     <h1 className="font-bold text-white ">
-                      {Number(formData.items[index].qty) *
-                        Number(formData.items[index].price)}
+                      {Number(formData.items?.[index].quantity) *
+                        Number(formData.items?.[index].price)}
                     </h1>
                   </div>
                   <div className="flex items-center justify-center mb-6 mt-2">
                     <img
                       src={deleteBin}
-                      alt=""
+                      alt="Dustbin button"
                       onClick={() => deleteItemRow(index)}
                     />
                   </div>
@@ -403,7 +411,6 @@ const Form: React.FC<formModalProp> = ({ isOpen, closeModal }) => {
               <button
                 className="flex items-center font-bold text-white bg-purpleButton rounded-full ml-2 py-4 px-7 max-sm:ml-0"
                 type="submit"
-                onClick={() => console.log(formData)}
               >
                 Save & Send
               </button>

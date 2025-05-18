@@ -30,8 +30,8 @@ const InvoiceListItem = ({
   return (
     <>
       <div className="flex w-screen justify-center mt-5 mb-5 box-border">
-        <div className="w-[70%]  flex justify-between bg-invoiceTab p-5 rounded-xl text-white transition-all max-sm:h-[200px] max-sm:w-[87%] max-xm:hover:w-[90%]">
-          <div className="flex space-x-16 items-center max-sm:space-x-0 max-sm:flex-col max-sm:justify-between max-sm:items-start">
+        <div className="w-[80%] flex justify-between bg-invoiceTab p-5 rounded-xl text-white transition-all max-sm:h-[200px] max-sm:w-[87%] max-xm:hover:w-[90%]">
+          <div className="flex items-center max-sm:space-x-0 max-sm:flex-col max-sm:justify-between max-sm:items-start">
             <h1 className="font-bold w-[5em]">#{invoiceID}</h1>
             <p className="w-[8em]">Due {dueDate}</p>
             <p>{clientName}</p>

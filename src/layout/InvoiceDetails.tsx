@@ -8,10 +8,6 @@ import ModalPortal from "../components/ModalPortal";
 import DeleteModal from "../components/DeleteModal";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
-// type InvoiceDetailsProps = {
-//   invoiceData: Invoice[];
-// };
-
 const InvoiceDetails = () => {
   const { invoiceId } = useParams();
   const invoiceIndex = invoiceData.findIndex((item) => item.id === invoiceId);
@@ -76,7 +72,12 @@ const InvoiceDetails = () => {
     <div className="invoiceContainer w-[730px] flex flex-col items-center justify-between my-5 mx-auto">
       {/* Modal portal to inject the modal on root element */}
       <ModalPortal>
-        <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
+        <Form
+          isOpen={isEditingOn}
+          closeModal={handleCloseModal}
+          invoiceData={invoiceData[index]}
+          mode="edit"
+        />
         {isDeleteOn && (
           <DeleteModal
             handleDeleteModalActions={handleDeleteModalActions}
@@ -185,7 +186,7 @@ const InvoiceDetails = () => {
                 key={index}
                 className="tableRow grid grid-cols-4 text-right mb-10 px-10 font-bold"
               >
-                <div className="text-left">{item.name}</div>
+                <div className="text-left">{item.itemName}</div>
                 <div className="text-center">{item.quantity}</div>
                 <div>&#8377; {item.price}</div>
                 <div>&#8377; {item.total}</div>

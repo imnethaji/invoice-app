@@ -39,8 +39,8 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
 
   return (
     <div className="flex w-screen items-center mt-20 justify-center">
-      <Form isOpen={isEditingOn} closeModal={handleNewInvoice} />
-      <div className="flex  w-[70%] justify-between max-sm:flex-col max-sm:items-center ">
+      <Form isOpen={isEditingOn} closeModal={handleNewInvoice} mode="new" />
+      <div className="flex w-[80%] justify-between max-sm:flex-col max-sm:items-center">
         <div>
           <div className="max-sm:text-center max-sm:space-y-5">
             <h1 className="text-2xl font-bold text-white max-sm:text-5xl">
@@ -54,16 +54,16 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
           </div>
         </div>
         <div className="flex items-center relative max-sm:flex-col max-sm:space-y-6">
-          <p
+          <div
             onClick={onFilter}
-            className="flex  items-center text-white font-bold cursor-pointer max-sm:mt-6"
+            className="flex items-center justify-center text-white font-bold cursor-pointer max-sm:mt-6"
           >
-            Filter by status{" "}
+            <p className="font-bold max-sm:mt-6">Filter by status</p>
             <span className="ml-5">
               <img src={arrowIcon} alt="" />
             </span>
             {isFilterOn && <FilterOptions onOptionClick={handleFilterOption} />}
-          </p>
+          </div>
 
           <button
             className=" flex items-center font-bold text-white bg-purpleButton rounded-full ml-5 p-2 px-3 max-sm:ml-0"

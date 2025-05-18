@@ -3,8 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 :root {
     font-family: "League Spartan", sans-serif;
     font-optical-sizing: auto;
@@ -16,7 +14,6 @@ body {
     background-color: #141625;
     overflow-x: hidden;
 }
-
 
 /* width */
 ::-webkit-scrollbar {

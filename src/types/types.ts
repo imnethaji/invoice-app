@@ -6,7 +6,7 @@ interface Address {
 }
 
 interface Item {
-  name: string;
+  itemName: string;
   quantity: number;
   price: number;
   total: number;
