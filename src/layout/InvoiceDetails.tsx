@@ -5,6 +5,7 @@ import Form from "../Modal/Form";
 import INVOICE_DATA from "../data file/data.json";
 import { Link, useParams } from "react-router";
 import ModalPortal from "../components/ModalPortal";
+import DeleteModal from "../components/DeleteModal";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 // type InvoiceDetailsProps = {
@@ -16,15 +17,24 @@ const InvoiceDetails = () => {
   const invoiceIndex = invoiceData.findIndex((item) => item.id === invoiceId);
   const index = invoiceIndex;
   const [isEditingOn, setIsEditingOn] = useState(false);
+  const [isDeleteOn, setIsDeleteOn] = useState(false);
   const [isPaid, setIsPaid] = useState(
     invoiceData[index].status === "paid" ? true : false
   );
+  function toggleDeleteModal() {
+    setIsDeleteOn(!isDeleteOn);
+  }
+  function handleDeleteModalActions(action: "cancel" | "delete") {
+    if (action == "cancel") {
+      setIsDeleteOn(!isDeleteOn);
+    }
+  }
   let paidButtonClass = `bg-purpleButton`;
   const buttonClass =
     "flex items-center  justify-center ml-10 w-[120px] p-3 rounded bg-opacity-20 font-bold text-md";
   let statusColor = "";
   const invoiceButtonClass = "text-white rounded-full ml-4 font-bold px-8 py-4";
-  // Color changing depending on paid status
+  // Status color changing depending on paid status
   if (isPaid) {
     statusColor = "bg-paidButton text-paidButton";
     paidButtonClass = "bg-editButton text-grey";
@@ -67,6 +77,12 @@ const InvoiceDetails = () => {
       {/* Modal portal to inject the modal on root element */}
       <ModalPortal>
         <Form isOpen={isEditingOn} closeModal={handleCloseModal} />
+        {isDeleteOn && (
+          <DeleteModal
+            handleDeleteModalActions={handleDeleteModalActions}
+            invoiceId={invoiceId}
+          />
+        )}
       </ModalPortal>
 
       <div className="w-full flex mb-8">
@@ -93,7 +109,10 @@ const InvoiceDetails = () => {
           >
             Edit
           </button>
-          <button className={`${invoiceButtonClass} bg-deleteButton`}>
+          <button
+            className={`${invoiceButtonClass} bg-deleteButton`}
+            onClick={toggleDeleteModal}
+          >
             Delete
           </button>
           <Link to="/">
