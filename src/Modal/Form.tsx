@@ -91,7 +91,8 @@ const Form: React.FC<formModalProp> = ({
   ) => {
     const { value } = e.target;
     setFormData((prevData) => {
-      const updatedItems = [...prevData.items];
+      const items = prevData.items ?? [];
+      const updatedItems = [...items];
       updatedItems[index] = {
         ...updatedItems[index],
         [field]: value,
@@ -106,17 +107,20 @@ const Form: React.FC<formModalProp> = ({
   const addNewItem = () => {
     setFormData((prevData) => ({
       ...prevData,
-      items: [...prevData.items, { itemName: "", quantity: "", price: "" }],
+      items: [
+        ...(prevData.items ?? []),
+        { itemName: "", quantity: "", price: "" },
+      ],
     }));
   };
 
   const deleteItemRow = (index: number) => {
-    if (formData.items?.length !== 1) {
+    if ((formData.items?.length ?? 0) !== 1) {
       setFormData((prevData) => ({
         ...prevData,
-        items: [
-          ...prevData.items.filter((_, itemIndex) => itemIndex !== index),
-        ],
+        items: (prevData.items ?? []).filter(
+          (_, itemIndex) => itemIndex !== index
+        ),
       }));
     }
   };
