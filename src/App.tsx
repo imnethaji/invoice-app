@@ -35,9 +35,9 @@ function App() {
       y: 0, // Move to original position
       transition: {
         duration: 0.5,
-        type: "spring", // Add a spring animation
-        stiffness: 100, // Adjust spring stiffness
-        damping: 20, // Adjust spring damping
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
       },
     },
   };

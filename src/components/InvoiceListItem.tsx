@@ -37,7 +37,7 @@ const InvoiceListItem = ({
             <p>{clientName}</p>
           </div>
           <div className="flex items-center max-sm:flex-col max-sm:justify-between max-sm:items-center">
-            <h1 className="font-bold">${total}</h1>
+            <h1 className="font-bold">&#8377;{total}</h1>
             <button
               disabled
               className={`${buttonClass} font-bold bg-opacity-20 max-sm:ml-0`}

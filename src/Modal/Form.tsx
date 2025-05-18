@@ -17,6 +17,7 @@ export interface AddressData {
 
 export interface FormData {
   id?: string;
+  status?: string;
   senderAddress?: AddressData;
   clientAddress?: AddressData;
   clientName?: string;
@@ -409,14 +410,18 @@ const Form: React.FC<formModalProp> = ({
               Discard
             </button>
             <div className="flex items-center">
-              <button className="flex items-center font-bold text-[#DFE3FA] bg-[#373B53] rounded-full py-4 px-7 max-sm:ml-0">
-                Save as Draft
-              </button>
+              {(mode === "new" ||
+                (mode === "edit" && formData.status === "draft")) && (
+                <button className="flex items-center font-bold text-[#DFE3FA] bg-[#373B53] rounded-full py-4 px-7 max-sm:ml-0">
+                  Save as Draft
+                </button>
+              )}
+
               <button
                 className="flex items-center font-bold text-white bg-purpleButton rounded-full ml-2 py-4 px-7 max-sm:ml-0"
                 type="submit"
               >
-                Save & Send
+                {mode == "new" ? "Save & Send" : "Update & Send"}
               </button>
             </div>
           </div>

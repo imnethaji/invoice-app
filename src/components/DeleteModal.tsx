@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 interface DeleteModalProps {
   invoiceId: string | undefined;
   handleDeleteModalActions: (action: "cancel" | "delete") => void;
@@ -8,8 +10,20 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   handleDeleteModalActions,
 }) => {
   return (
-    <div className="fixed inset-0 h-screen w-screen items-center z-50 bg-black bg-opacity-60 flex justify-center p-10">
-      <div className="w-[480px] flex flex-col bg-[#10111d] text-white p-12 rounded-xl space-y-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 h-screen w-screen z-50 bg-black bg-opacity-60 flex justify-center items-center p-10"
+    >
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+        className="w-[480px] flex flex-col bg-[#10111d] text-white p-12 rounded-xl space-y-6"
+      >
         <div className="flex flex-col space-y-5">
           <h1 className="font-bold text-2xl">Confirm Deletion</h1>
           <p className="text-sm">
@@ -24,12 +38,15 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
           >
             Cancel
           </button>
-          <button className="bg-[#EC5757] text-sm p-3 px-6 rounded-full font-bold">
+          <button
+            onClick={() => handleDeleteModalActions("delete")}
+            className="bg-[#EC5757] text-sm p-3 px-6 rounded-full font-bold"
+          >
             Delete
           </button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
