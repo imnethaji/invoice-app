@@ -6,11 +6,13 @@ import INVOICE_DATA from "./data file/data.json";
 import Invoice from "./types/types";
 import InvoiceHeader from "./components/InvoiceHeader";
 import { motion, Variants } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 function App() {
   const [isFilterOn, setIsFilterOn] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [noInvoice] = useState(() => {
     return invoiceData.length === 0;
   });
@@ -25,6 +27,20 @@ function App() {
     },
   };
 
+  const slideVariants: Variants = {
+    initial: { x: "50%", opacity: 0 },
+    animate: { x: 0, opacity: 1 },
+    exit: { y: "-60%", opacity: 0 },
+  };
+
+  const transition = {
+    duration: 0.3,
+    delay: 0.5,
+    type: "spring",
+    stiffness: 100,
+    damping: 20,
+  };
+
   const itemVariants: Variants = {
     hidden: {
       opacity: 0,
@@ -32,13 +48,8 @@ function App() {
     },
     show: {
       opacity: 1,
-      y: 0, // Move to original position
-      transition: {
-        duration: 0.5,
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-      },
+      y: 0,
+      transition: transition,
     },
   };
 
@@ -48,33 +59,83 @@ function App() {
 
   return (
     <>
-      <InvoiceHeader
-        invoiceData={invoiceData}
-        onFilter={handleFilterClick}
-        noInvoice={noInvoice}
-        isFilterOn={isFilterOn}
-      />
+      <AnimatePresence mode="wait">
+        {!selectedInvoice ? (
+          <motion.div
+            key="invoice-list"
+            variants={slideVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ duration: 0.4 }}
+            className="relative w-full"
+          >
+            <InvoiceHeader
+              invoiceData={invoiceData}
+              onFilter={handleFilterClick}
+              noInvoice={noInvoice}
+              isFilterOn={isFilterOn}
+            />
 
-      {noInvoice ? (
-        <NoInvoice />
-      ) : (
-        <motion.div variants={container} initial="hidden" animate="show">
-          {invoiceData.map((invoice, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants} // or use itemVariantsFromRight for right side entrance
+            {noInvoice ? (
+              <NoInvoice />
+            ) : (
+              <motion.div
+                variants={container}
+                initial="hidden"
+                animate="show"
+                className="space-y-4"
+              >
+                <AnimatePresence mode="popLayout">
+                  {invoiceData.map((invoice) => (
+                    <motion.div
+                      key={invoice.id}
+                      variants={itemVariants}
+                      initial="hidden"
+                      animate="show"
+                      exit={{ opacity: 0, y: -50 }}
+                      layout // allows smooth layout transitions
+                    >
+                      <InvoiceListItem
+                        invoiceID={invoice.id}
+                        dueDate={invoice.paymentDue}
+                        clientName={invoice.clientName}
+                        total={invoice.total}
+                        paymentStatus={invoice.status}
+                        onClick={() => setSelectedInvoice(invoice)}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="invoice-detail"
+            variants={slideVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ duration: 0.4 }}
+            className="relative w-full p-6 text-white"
+          >
+            <button
+              onClick={() => setSelectedInvoice(null)}
+              className="bg-[#252945] px-4 py-2 rounded"
             >
-              <InvoiceListItem
-                invoiceID={invoice.id}
-                dueDate={invoice.paymentDue}
-                clientName={invoice.clientName}
-                total={invoice.total}
-                paymentStatus={invoice.status}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
-      )}
+              Back
+            </button>
+            <h2 className="text-2xl font-bold mt-4">
+              Invoice #{selectedInvoice.id}
+            </h2>
+            <p>Client: {selectedInvoice.clientName}</p>
+            <p>Due: {selectedInvoice.paymentDue}</p>
+            <p>Total: ${selectedInvoice.total}</p>
+            <p>Status: {selectedInvoice.status}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

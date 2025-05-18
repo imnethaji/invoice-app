@@ -7,6 +7,7 @@ interface Props {
   clientName: string;
   total: number;
   paymentStatus: string;
+  onClick: () => void;
 }
 
 const InvoiceListItem = ({
