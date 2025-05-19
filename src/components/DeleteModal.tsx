@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import ModalBgDiv from "./ModalBgDiv";
 
 interface DeleteModalProps {
   invoiceId: string | undefined;
@@ -10,17 +11,11 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   handleDeleteModalActions,
 }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className="fixed inset-0 h-screen w-screen z-50 bg-black bg-opacity-60 flex justify-center items-center p-10"
-    >
+    <ModalBgDiv>
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0 }}
+        initial={{ y: "250%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "250%" }}
         transition={{ duration: 0.4, ease: "easeInOut" }}
         className="w-[480px] flex flex-col bg-[#10111d] text-white p-12 rounded-xl space-y-6"
       >
@@ -46,7 +41,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
           </button>
         </div>
       </motion.div>
-    </motion.div>
+    </ModalBgDiv>
   );
 };
 

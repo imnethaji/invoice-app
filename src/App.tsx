@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InvoiceListItem from "./components/InvoiceListItem";
 import NoInvoice from "./components/NoInvoice";
 import INVOICE_DATA from "./data file/data.json";
@@ -8,9 +8,13 @@ import InvoiceHeader from "./components/InvoiceHeader";
 import { motion, Variants } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 
-const invoiceData: Invoice[] = INVOICE_DATA;
+const initialInvoiceData: Invoice[] = INVOICE_DATA;
 
 function App() {
+  const [invoiceData, setInvoiceData] = useState(initialInvoiceData);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [filteredInvoiceData, setFilteredInvoiceData] =
+    useState<Invoice[]>(initialInvoiceData);
   const [isFilterOn, setIsFilterOn] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [noInvoice] = useState(() => {
@@ -27,10 +31,22 @@ function App() {
     },
   };
 
+  useEffect(() => {
+    if (selectedFilters.length > 0) {
+      setInvoiceData(
+        initialInvoiceData.filter((item) =>
+          selectedFilters.includes(item.status)
+        )
+      );
+    } else {
+      setInvoiceData(initialInvoiceData);
+    }
+  }, [selectedFilters]);
+
   const slideVariants: Variants = {
-    initial: { x: "50%", opacity: 0 },
+    initial: { x: "-50%", opacity: 0 },
     animate: { x: 0, opacity: 1 },
-    exit: { y: "-60%", opacity: 0 },
+    exit: { x: "50%", opacity: 0 },
   };
 
   const transition = {
@@ -75,6 +91,9 @@ function App() {
               onFilter={handleFilterClick}
               noInvoice={noInvoice}
               isFilterOn={isFilterOn}
+              setFilteredInvoiceData={setFilteredInvoiceData}
+              selectedFilters={selectedFilters}
+              setSelectedFilters={setSelectedFilters}
             />
 
             {noInvoice ? (
@@ -87,7 +106,7 @@ function App() {
                 className="space-y-4"
               >
                 <AnimatePresence mode="popLayout">
-                  {invoiceData.map((invoice) => (
+                  {filteredInvoiceData.map((invoice) => (
                     <motion.div
                       key={invoice.id}
                       variants={itemVariants}

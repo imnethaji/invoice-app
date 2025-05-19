@@ -10,7 +10,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ onOptionClick }) => {
 
   return (
     <div
-      className="filterOptions absolute top-12 -left-6 w-44 bg-invoiceTab p-4 rounded-xl space-y-4"
+      className="filterOptions absolute top-12 z-50 -left-6 w-44 bg-invoiceTab p-4 rounded-xl space-y-4"
       onClick={(e) => e.stopPropagation()}
     >
       <div

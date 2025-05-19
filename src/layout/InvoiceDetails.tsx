@@ -6,7 +6,7 @@ import INVOICE_DATA from "../data file/data.json";
 import { Link, useParams } from "react-router";
 import ModalPortal from "../components/ModalPortal";
 import DeleteModal from "../components/DeleteModal";
-import { AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 const InvoiceDetails = () => {
@@ -70,7 +70,13 @@ const InvoiceDetails = () => {
   }
 
   return (
-    <div className="invoiceContainer w-[730px] flex flex-col items-center justify-between my-5 mx-auto">
+    <motion.div
+      initial={{ x: "200%" }}
+      animate={{ x: 0 }}
+      exit={{ x: "200%" }}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
+      className="invoiceContainer w-[730px] flex flex-col items-center justify-between my-5 mx-auto"
+    >
       {/* Modal portal to inject the modal on root element */}
       <ModalPortal>
         <AnimatePresence>
@@ -211,7 +217,7 @@ const InvoiceDetails = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

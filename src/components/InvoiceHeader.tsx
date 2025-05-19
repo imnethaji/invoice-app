@@ -10,6 +10,9 @@ interface InvoiceHeaderProps {
   noInvoice: boolean;
   onFilter: MouseEventHandler<HTMLParagraphElement>;
   isFilterOn: boolean;
+  setFilteredInvoiceData: (filtered: Invoice[]) => void;
+  selectedFilters: string[];
+  setSelectedFilters: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
@@ -17,16 +20,21 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   noInvoice,
   onFilter,
   isFilterOn,
+  setFilteredInvoiceData,
+  selectedFilters, // ✅ use props
+  setSelectedFilters, // ✅ use props
 }) => {
   const [isEditingOn, setIsEditingOn] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
   function handleNewInvoice() {
     setIsEditingOn(!isEditingOn);
   }
   useEffect(() => {
-    console.log(selectedFilters);
-  }, [selectedFilters]);
+    const filtered = invoiceData.filter((inv) =>
+      selectedFilters.includes(inv.status)
+    );
+    setFilteredInvoiceData(filtered);
+  }, [selectedFilters, invoiceData]);
 
   const handleFilterOption = (status: string) => {
     setSelectedFilters((prev) => {

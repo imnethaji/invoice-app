@@ -2,6 +2,8 @@ import deleteBin from "../assets/icon-delete.svg";
 import React, { useState } from "react";
 import Invoice from "../types/types";
 
+import { motion } from "framer-motion";
+
 export interface Item {
   itemName?: string;
   quantity?: string;
@@ -142,8 +144,18 @@ const Form: React.FC<formModalProp> = ({
 
   return (
     isOpen && (
-      <div className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-start justify-center overflow-y-auto p-10">
-        <form
+      <motion.div
+        className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-start justify-center overflow-y-auto p-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <motion.form
+          initial={{ y: "50%" }}
+          animate={{ y: 0 }}
+          exit={{ y: "50%" }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
           className="w-[700px] mb-10 bg-[#10111d] p-10 rounded-xl mt-10"
           onSubmit={handleSubmit}
         >
@@ -425,8 +437,8 @@ const Form: React.FC<formModalProp> = ({
               </button>
             </div>
           </div>
-        </form>
-      </div>
+        </motion.form>
+      </motion.div>
     )
   );
 };
