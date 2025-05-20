@@ -5,6 +5,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import InvoiceDetails from "./layout/InvoiceDetails.tsx";
 import PageNotFound from "./layout/PageNotFound.tsx";
+import { AnimatePresence } from "framer-motion";
 
 const router = createBrowserRouter([
   { path: "/", Component: App, errorElement: <PageNotFound /> },
@@ -17,6 +18,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AnimatePresence>
+      <RouterProvider router={router} />
+    </AnimatePresence>
   </React.StrictMode>
 );

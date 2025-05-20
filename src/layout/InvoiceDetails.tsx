@@ -3,13 +3,14 @@ import Invoice from "../types/types";
 import leftArrow from "../assets/icon-arrow-left.svg";
 import Form from "../Modal/Form";
 import INVOICE_DATA from "../data file/data.json";
-import { Link, useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import ModalPortal from "../components/ModalPortal";
 import DeleteModal from "../components/DeleteModal";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 const InvoiceDetails = () => {
+  const navigate = useNavigate();
   const { invoiceId } = useParams();
   const invoiceIndex = invoiceData.findIndex((item) => item.id === invoiceId);
   const index = invoiceIndex;
@@ -79,32 +80,28 @@ const InvoiceDetails = () => {
     >
       {/* Modal portal to inject the modal on root element */}
       <ModalPortal>
-        <AnimatePresence>
-          {isEditingOn && (
-            <Form
-              isOpen={isEditingOn}
-              closeModal={handleCloseModal}
-              invoiceData={invoiceData[index]}
-              mode="edit"
-            />
-          )}
+        {isEditingOn && (
+          <Form
+            isOpen={isEditingOn}
+            closeModal={handleCloseModal}
+            invoiceData={invoiceData[index]}
+            mode="edit"
+          />
+        )}
 
-          {isDeleteOn && (
-            <DeleteModal
-              invoiceId={invoiceId}
-              handleDeleteModalActions={handleDeleteModalActions}
-            />
-          )}
-        </AnimatePresence>
+        {isDeleteOn && (
+          <DeleteModal
+            invoiceId={invoiceId}
+            handleDeleteModalActions={handleDeleteModalActions}
+          />
+        )}
       </ModalPortal>
 
-      <div className="w-full flex mb-8">
-        <Link to="/">
-          <button className="text-white flex mt-6 justify-center items-center">
-            <img src={leftArrow} alt="" className="mr-4" />
-            <span className="mt-1">Go back</span>
-          </button>
-        </Link>
+      <div className="w-full flex mb-8" onClick={() => navigate("/")}>
+        <button className="text-white flex mt-6 justify-center items-center">
+          <img src={leftArrow} alt="" className="mr-4" />
+          <span className="mt-1">Go back</span>
+        </button>
       </div>
       {/* Invoice Header with button controls starts here*/}
       <div className="invoiceHeader w-[100%] bg-cardBgBlue flex justify-between py-4 px-6 rounded-xl">
@@ -128,15 +125,13 @@ const InvoiceDetails = () => {
           >
             Delete
           </button>
-          <Link to="/">
-            <button
-              className={`${invoiceButtonClass} ${paidButtonClass}`}
-              disabled={isPaid}
-              onClick={updatePaidStatus}
-            >
-              Mark as Paid
-            </button>
-          </Link>
+          <button
+            className={`${invoiceButtonClass} ${paidButtonClass}`}
+            disabled={isPaid}
+            onClick={updatePaidStatus}
+          >
+            Mark as Paid
+          </button>
         </div>
       </div>
       {/* Invoice Detail container starts */}

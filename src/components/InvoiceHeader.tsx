@@ -4,6 +4,7 @@ import arrowIcon from "../assets/icon-arrow-down.svg";
 import Invoice from "../types/types";
 import Form from "../Modal/Form";
 import FilterOptions from "./FilterOptions";
+import { AnimatePresence } from "framer-motion";
 
 interface InvoiceHeaderProps {
   invoiceData: Invoice[];
@@ -12,11 +13,11 @@ interface InvoiceHeaderProps {
   isFilterOn: boolean;
   setSelectedFilters: React.Dispatch<React.SetStateAction<string[]>>;
   selectedFilters: string[];
+  filteredInvoiceData: Invoice[];
 }
 
 const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
-  invoiceData,
-  noInvoice,
+  filteredInvoiceData,
   onFilter,
   isFilterOn,
   setSelectedFilters,
@@ -47,27 +48,28 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
               Invoices
             </h1>
             <p className="text-white text-xs max-sm:text-xl">
-              {noInvoice
+              {filteredInvoiceData.length === 0
                 ? `No invoices`
-                : `There are ${invoiceData.length} invoices available`}
+                : `There are ${filteredInvoiceData.length} invoices available`}
             </p>
           </div>
         </div>
         <div className="flex items-center relative max-sm:flex-col max-sm:space-y-6">
-          <div
-            onClick={onFilter}
-            className="flex items-center justify-center text-white font-bold cursor-pointer max-sm:mt-6"
-          >
-            <p className="font-bold max-sm:mt-6">Filter by status</p>
+          <div className="flex items-center justify-center text-white font-bold cursor-pointer max-sm:mt-6">
+            <p className="font-bold max-sm:mt-6" onClick={onFilter}>
+              Filter by status
+            </p>
             <span className="ml-5">
               <img src={arrowIcon} alt="" />
             </span>
-            {isFilterOn && (
-              <FilterOptions
-                selectedFilters={selectedFilters}
-                onOptionClick={handleFilterOption}
-              />
-            )}
+            <AnimatePresence>
+              {isFilterOn && (
+                <FilterOptions
+                  selectedFilters={selectedFilters}
+                  onOptionClick={handleFilterOption}
+                />
+              )}
+            </AnimatePresence>
           </div>
 
           <button
