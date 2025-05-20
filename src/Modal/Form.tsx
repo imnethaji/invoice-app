@@ -1,8 +1,7 @@
 import deleteBin from "../assets/icon-delete.svg";
 import React, { useState } from "react";
 import Invoice from "../types/types";
-
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface Item {
   itemName?: string;

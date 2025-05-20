@@ -5,7 +5,7 @@ import NoInvoice from "./components/NoInvoice";
 import INVOICE_DATA from "./data file/data.json";
 import Invoice from "./types/types";
 import InvoiceHeader from "./components/InvoiceHeader";
-import { motion, Variants } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 
 function App() {
   const initialInvoiceData: Invoice[] = INVOICE_DATA;
@@ -35,7 +35,7 @@ function App() {
   };
 
   const transition = {
-    duration: 0.3,
+    duration: 0.6,
     delay: 0.5,
     type: "spring",
     stiffness: 100,
@@ -59,9 +59,9 @@ function App() {
   }
 
   return (
-    <>
+    <AnimatePresence mode="popLayout">
       <motion.div
-        key="invoice-list"
+        key="invoice-list-container"
         variants={slideVariants}
         initial="initial"
         animate="animate"
@@ -83,6 +83,7 @@ function App() {
         ) : (
           <motion.div
             variants={container}
+            key="invoice-list"
             initial="hidden"
             animate="show"
             className="space-y-4"
@@ -109,7 +110,7 @@ function App() {
         )}
       </motion.div>
       )
-    </>
+    </AnimatePresence>
   );
 }
 
