@@ -1,7 +1,7 @@
 import deleteBin from "../assets/icon-delete.svg";
 import React, { useState } from "react";
 import Invoice from "../types/types";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export interface Item {
   itemName?: string;
@@ -142,7 +142,7 @@ const Form: React.FC<formModalProp> = ({
   };
 
   return (
-    <AnimatePresence>
+    <>
       {isOpen && (
         <motion.div
           className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-start justify-center overflow-y-auto p-10"
@@ -453,7 +453,7 @@ const Form: React.FC<formModalProp> = ({
           </motion.form>
         </motion.div>
       )}
-    </AnimatePresence>
+    </>
   );
 };
 

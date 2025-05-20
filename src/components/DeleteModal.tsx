@@ -11,7 +11,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   handleDeleteModalActions,
 }) => {
   return (
-    <ModalBgDiv>
+    <ModalBgDiv key={"delete-modal-bg"}>
       <motion.div
         initial={{ y: "250%" }}
         animate={{ y: 0 }}

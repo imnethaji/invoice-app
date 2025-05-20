@@ -5,7 +5,7 @@ import Form from "../Modal/Form";
 import INVOICE_DATA from "../data file/data.json";
 import { useParams, useNavigate } from "react-router";
 import DeleteModal from "../components/DeleteModal";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 const invoiceData: Invoice[] = INVOICE_DATA;
 
 const InvoiceDetails = () => {
@@ -77,20 +77,24 @@ const InvoiceDetails = () => {
       transition={{ duration: 0.4, ease: "easeInOut" }}
       className="invoiceContainer w-[730px] flex flex-col items-center justify-between my-5 mx-auto"
     >
-      {isEditingOn && (
-        <Form
-          isOpen={isEditingOn}
-          closeModal={handleCloseModal}
-          invoiceData={invoiceData[index]}
-          mode="edit"
-        />
-      )}
-      {isDeleteOn && (
-        <DeleteModal
-          invoiceId={invoiceId}
-          handleDeleteModalActions={handleDeleteModalActions}
-        />
-      )}
+      <AnimatePresence>
+        {isEditingOn && (
+          <Form
+            isOpen={isEditingOn}
+            closeModal={handleCloseModal}
+            invoiceData={invoiceData[index]}
+            mode="edit"
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isDeleteOn && (
+          <DeleteModal
+            invoiceId={invoiceId}
+            handleDeleteModalActions={handleDeleteModalActions}
+          />
+        )}
+      </AnimatePresence>
 
       <div className="w-full flex mb-8" onClick={() => navigate("/")}>
         <button className="text-white flex mt-6 justify-center items-center">

@@ -60,56 +60,58 @@ function App() {
 
   return (
     <AnimatePresence mode="popLayout">
-      <motion.div
-        key="invoice-list-container"
-        variants={slideVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        transition={{ duration: 0.4 }}
-        className="relative w-full"
-      >
-        <InvoiceHeader
-          invoiceData={filteredInvoiceData}
-          onFilter={handleFilterClick}
-          noInvoice={filteredInvoiceData.length > 0}
-          isFilterOn={isFilterOn}
-          setSelectedFilters={setSelectedFilters}
-          selectedFilters={selectedFilters}
-          filteredInvoiceData={filteredInvoiceData}
-        />
-        {filteredInvoiceData.length === 0 ? (
-          <NoInvoice />
-        ) : (
-          <motion.div
-            variants={container}
-            key="invoice-list"
-            initial="hidden"
-            animate="show"
-            className="space-y-4"
-          >
-            {filteredInvoiceData.map((invoice) => (
-              <motion.div
-                key={invoice.id}
-                variants={itemVariants}
-                initial="hidden"
-                animate="show"
-                exit={{ opacity: 0, y: -50 }}
-                layout
-              >
-                <InvoiceListItem
-                  invoiceID={invoice.id}
-                  dueDate={invoice.paymentDue}
-                  clientName={invoice.clientName}
-                  total={invoice.total}
-                  paymentStatus={invoice.status}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </motion.div>
-      )
+      <div className="fullLayout">
+        <motion.div
+          key="invoice-list-container"
+          variants={slideVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          transition={{ duration: 0.4 }}
+          className="relative w-full"
+        >
+          <InvoiceHeader
+            invoiceData={filteredInvoiceData}
+            onFilter={handleFilterClick}
+            noInvoice={filteredInvoiceData.length > 0}
+            isFilterOn={isFilterOn}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
+            filteredInvoiceData={filteredInvoiceData}
+          />
+          {filteredInvoiceData.length === 0 ? (
+            <NoInvoice />
+          ) : (
+            <motion.div
+              variants={container}
+              key="invoice-list"
+              initial="hidden"
+              animate="show"
+              className="space-y-4"
+            >
+              {filteredInvoiceData.map((invoice) => (
+                <motion.div
+                  key={invoice.id}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate="show"
+                  exit={{ opacity: 0, y: -50 }}
+                  layout
+                >
+                  <InvoiceListItem
+                    invoiceID={invoice.id}
+                    dueDate={invoice.paymentDue}
+                    clientName={invoice.clientName}
+                    total={invoice.total}
+                    paymentStatus={invoice.status}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </motion.div>
+        )
+      </div>
     </AnimatePresence>
   );
 }
