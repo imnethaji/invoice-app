@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import InvoiceListItem from "./components/InvoiceListItem";
 import NoInvoice from "./components/NoInvoice";
 import INVOICE_DATA from "./data file/data.json";
@@ -8,18 +8,17 @@ import InvoiceHeader from "./components/InvoiceHeader";
 import { motion, Variants } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 
-const initialInvoiceData: Invoice[] = INVOICE_DATA;
-
 function App() {
-  const [invoiceData, setInvoiceData] = useState(initialInvoiceData);
+  const initialInvoiceData: Invoice[] = INVOICE_DATA;
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [filteredInvoiceData, setFilteredInvoiceData] =
-    useState<Invoice[]>(initialInvoiceData);
   const [isFilterOn, setIsFilterOn] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
-  const [noInvoice] = useState(() => {
-    return invoiceData.length === 0;
-  });
+
+  const filteredInvoiceData = useMemo(() => {
+    return selectedFilters.length > 0
+      ? initialInvoiceData.filter((inv) => selectedFilters.includes(inv.status))
+      : initialInvoiceData;
+  }, [selectedFilters]);
 
   const container: Variants = {
     hidden: { opacity: 0 },
@@ -30,18 +29,6 @@ function App() {
       },
     },
   };
-
-  useEffect(() => {
-    if (selectedFilters.length > 0) {
-      setInvoiceData(
-        initialInvoiceData.filter((item) =>
-          selectedFilters.includes(item.status)
-        )
-      );
-    } else {
-      setInvoiceData(initialInvoiceData);
-    }
-  }, [selectedFilters]);
 
   const slideVariants: Variants = {
     initial: { x: "-50%", opacity: 0 },
@@ -87,16 +74,15 @@ function App() {
             className="relative w-full"
           >
             <InvoiceHeader
-              invoiceData={invoiceData}
+              invoiceData={filteredInvoiceData}
               onFilter={handleFilterClick}
-              noInvoice={noInvoice}
+              noInvoice={filteredInvoiceData.length > 0}
               isFilterOn={isFilterOn}
-              setFilteredInvoiceData={setFilteredInvoiceData}
-              selectedFilters={selectedFilters}
               setSelectedFilters={setSelectedFilters}
+              selectedFilters={selectedFilters}
             />
 
-            {noInvoice ? (
+            {filteredInvoiceData.length === 0 ? (
               <NoInvoice />
             ) : (
               <motion.div

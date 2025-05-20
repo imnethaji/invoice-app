@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState, useEffect } from "react";
+import { MouseEventHandler, useState } from "react";
 import plusIcon from "../assets/icon-plus.svg";
 import arrowIcon from "../assets/icon-arrow-down.svg";
 import Invoice from "../types/types";
@@ -10,9 +10,8 @@ interface InvoiceHeaderProps {
   noInvoice: boolean;
   onFilter: MouseEventHandler<HTMLParagraphElement>;
   isFilterOn: boolean;
-  setFilteredInvoiceData: (filtered: Invoice[]) => void;
-  selectedFilters: string[];
   setSelectedFilters: React.Dispatch<React.SetStateAction<string[]>>;
+  selectedFilters: string[];
 }
 
 const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
@@ -20,21 +19,14 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   noInvoice,
   onFilter,
   isFilterOn,
-  setFilteredInvoiceData,
-  selectedFilters, // ✅ use props
-  setSelectedFilters, // ✅ use props
+  setSelectedFilters,
+  selectedFilters,
 }) => {
   const [isEditingOn, setIsEditingOn] = useState(false);
 
   function handleNewInvoice() {
     setIsEditingOn(!isEditingOn);
   }
-  useEffect(() => {
-    const filtered = invoiceData.filter((inv) =>
-      selectedFilters.includes(inv.status)
-    );
-    setFilteredInvoiceData(filtered);
-  }, [selectedFilters, invoiceData]);
 
   const handleFilterOption = (status: string) => {
     setSelectedFilters((prev) => {
@@ -70,7 +62,12 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
             <span className="ml-5">
               <img src={arrowIcon} alt="" />
             </span>
-            {isFilterOn && <FilterOptions onOptionClick={handleFilterOption} />}
+            {isFilterOn && (
+              <FilterOptions
+                selectedFilters={selectedFilters}
+                onOptionClick={handleFilterOption}
+              />
+            )}
           </div>
 
           <button
