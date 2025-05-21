@@ -40,7 +40,9 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
 
   return (
     <div className="flex w-screen items-center mt-20 justify-center">
-      <Form isOpen={isEditingOn} closeModal={handleNewInvoice} mode="new" />
+      <AnimatePresence mode="wait">
+        {isEditingOn && <Form closeModal={handleNewInvoice} mode="new" />}
+      </AnimatePresence>
       <div className="flex w-[80%] justify-between max-sm:flex-col max-sm:items-center">
         <div>
           <div className="max-sm:text-center max-sm:space-y-5">
