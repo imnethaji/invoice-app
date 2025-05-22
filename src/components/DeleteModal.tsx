@@ -11,12 +11,16 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   handleDeleteModalActions,
 }) => {
   return (
-    <ModalBgDiv key={"delete-modal-bg"}>
+    <ModalBgDiv
+      key={"delete-modal-bg"}
+      onClick={() => handleDeleteModalActions("cancel")}
+    >
       <motion.div
         initial={{ y: "250%" }}
         animate={{ y: 0 }}
         exit={{ y: "250%" }}
         transition={{ duration: 0.4, ease: "easeInOut" }}
+        onClick={(e) => e.stopPropagation()}
         className="w-[480px] flex flex-col bg-[#10111d] text-white p-12 rounded-xl space-y-6"
       >
         <div className="flex flex-col space-y-5">

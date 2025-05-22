@@ -143,6 +143,7 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
+        onClick={closeModal}
       >
         <motion.form
           initial={{ x: "-100%" }}
@@ -150,6 +151,7 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
           exit={{ x: "-100%" }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
           className="w-[800px] absolute top-0 left-0 mb-10 bg-[#10111d] p-10 rounded-xl mt-0"
+          onClick={(e) => e.stopPropagation()}
           onSubmit={handleSubmit}
         >
           <h1 className="font-bold text-[#DFE3FA] text-2xl">
