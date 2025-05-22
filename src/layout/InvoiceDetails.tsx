@@ -11,13 +11,14 @@ const invoiceData: Invoice[] = INVOICE_DATA;
 const InvoiceDetails = () => {
   const navigate = useNavigate();
   const { invoiceId } = useParams();
-  const invoiceIndex = invoiceData.findIndex((item) => item.id === invoiceId);
-  const index = invoiceIndex;
+  const index = invoiceData.findIndex((item) => item.id === invoiceId);
   const [isEditingOn, setIsEditingOn] = useState(false);
   const [isDeleteOn, setIsDeleteOn] = useState(false);
   const [isPaid, setIsPaid] = useState(
     invoiceData[index].status === "paid" ? true : false
   );
+
+  console.log(invoiceData[index].status);
   function toggleDeleteModal() {
     setIsDeleteOn(!isDeleteOn);
   }
@@ -124,13 +125,15 @@ const InvoiceDetails = () => {
           >
             Delete
           </button>
-          <button
-            className={`${invoiceButtonClass} ${paidButtonClass}`}
-            disabled={isPaid}
-            onClick={updatePaidStatus}
-          >
-            Mark as Paid
-          </button>
+          {invoiceData[index].status !== "paid" && (
+            <button
+              className={`${invoiceButtonClass} ${paidButtonClass}`}
+              disabled={isPaid}
+              onClick={updatePaidStatus}
+            >
+              Mark as Paid
+            </button>
+          )}
         </div>
       </div>
       {/* Invoice Detail container starts */}
