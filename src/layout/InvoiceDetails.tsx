@@ -78,10 +78,9 @@ const InvoiceDetails = () => {
       transition={{ duration: 0.4, ease: "easeInOut" }}
       className="invoiceContainer w-[730px] flex flex-col items-center justify-between my-5 mx-auto"
     >
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isEditingOn && (
           <Form
-            isOpen={isEditingOn}
             closeModal={handleCloseModal}
             invoiceData={invoiceData[index]}
             mode="edit"
