@@ -18,7 +18,6 @@ const InvoiceDetails = () => {
     invoiceData[index].status === "paid" ? true : false
   );
 
-  console.log(invoiceData[index].status);
   function toggleDeleteModal() {
     setIsDeleteOn(!isDeleteOn);
   }

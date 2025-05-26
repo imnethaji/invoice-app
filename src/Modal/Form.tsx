@@ -256,7 +256,7 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
             <br />
             <div className="flex justify-between">
               <div className="w-1/3">
-                <label className="text-[#DFE3FA]" htmlFor="city">
+                <label className="block text-[#DFE3FA]" htmlFor="city">
                   City
                 </label>
                 <input
