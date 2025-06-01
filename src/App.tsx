@@ -9,24 +9,29 @@ import { AnimatePresence, motion, Variants } from "framer-motion";
 import { fetchInvoices } from "./api/api";
 
 function App() {
-  const initialInvoiceData: Invoice[] = INVOICE_DATA;
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [isFilterOn, setIsFilterOn] = useState(false);
-  // Fetching from API
+  // Fetch data from API if backend not active load default data
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   useEffect(() => {
     fetchInvoices()
-      .then((data) => setInvoices(data))
-      .catch((error) => console.error("Failed to fetch", error));
+      .then((data) => {
+        console.log("Connection with server successful.");
+        setInvoices(data);
+      })
+      .catch((error) => {
+        setInvoices(INVOICE_DATA);
+        console.error("Failed to fetch", error);
+        console.log("Loading default data.");
+      });
   }, []);
 
-  console.log(invoices);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [isFilterOn, setIsFilterOn] = useState(false);
 
   const filteredInvoiceData = useMemo(() => {
     return selectedFilters.length > 0
-      ? initialInvoiceData.filter((inv) => selectedFilters.includes(inv.status))
-      : initialInvoiceData;
-  }, [selectedFilters, initialInvoiceData]);
+      ? invoices.filter((inv) => selectedFilters.includes(inv.status))
+      : invoices;
+  }, [selectedFilters, invoices]);
 
   const container: Variants = {
     hidden: { opacity: 0 },
