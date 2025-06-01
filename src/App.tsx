@@ -1,16 +1,26 @@
 import "./App.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import InvoiceListItem from "./components/InvoiceListItem";
 import NoInvoice from "./components/NoInvoice";
 import INVOICE_DATA from "./data file/data.json";
 import Invoice from "./types/types";
 import InvoiceHeader from "./components/InvoiceHeader";
 import { AnimatePresence, motion, Variants } from "framer-motion";
+import { fetchInvoices } from "./api/api";
 
 function App() {
   const initialInvoiceData: Invoice[] = INVOICE_DATA;
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isFilterOn, setIsFilterOn] = useState(false);
+  // Fetching from API
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  useEffect(() => {
+    fetchInvoices()
+      .then((data) => setInvoices(data))
+      .catch((error) => console.error("Failed to fetch", error));
+  }, []);
+
+  console.log(invoices);
 
   const filteredInvoiceData = useMemo(() => {
     return selectedFilters.length > 0
