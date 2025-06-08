@@ -75,7 +75,7 @@ const InvoiceDetails = () => {
       animate={{ x: 0 }}
       exit={{ x: "200%" }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
-      className="invoiceContainer w-[730px] flex flex-col items-center justify-between my-5 mx-auto"
+      className="invoiceContainer w-[730px] max-sm:w-screen flex flex-col items-center justify-between my-5 mx-auto"
     >
       <AnimatePresence mode="wait">
         {isEditingOn && (
@@ -95,22 +95,25 @@ const InvoiceDetails = () => {
         )}
       </AnimatePresence>
 
-      <div className="w-full flex mb-8" onClick={() => navigate("/")}>
+      <div
+        className="w-full flex mb-8 max-sm:w-[90%]"
+        onClick={() => navigate("/")}
+      >
         <button className="text-white flex mt-6 justify-center items-center">
           <img src={leftArrow} alt="" className="mr-4" />
           <span className="mt-1">Go back</span>
         </button>
       </div>
       {/* Invoice Header with button controls starts here*/}
-      <div className="invoiceHeader w-[100%] bg-cardBgBlue flex justify-between py-4 px-6 rounded-xl">
-        <div className="flex items-center">
+      <div className="invoiceHeader w-[100%] bg-cardBgBlue flex justify-between py-4 px-6 rounded-xl max-sm:w-[90%]">
+        <div className="flex max-sm:w-full items-center max-sm:justify-between">
           <p className="text-white">Status</p>
           <button disabled className={`${buttonClass} ${statusColor}`}>
             <div className={`${statusColor} w-2 h-2 mr-2 rounded-full`}></div>
             {invoiceData[index].status}
           </button>
         </div>
-        <div className="invoiceButtons">
+        <div className="invoiceButtons max-sm:hidden">
           <button
             onClick={handleOpenModal}
             className={`${invoiceButtonClass} bg-editButton`}
@@ -135,8 +138,8 @@ const InvoiceDetails = () => {
         </div>
       </div>
       {/* Invoice Detail container starts */}
-      <div className="invoiceDetailsContainer w-[100%] text-white bg-cardBgBlue mt-6 rounded-xl p-14">
-        <div className="id w-[100%]">
+      <div className="invoiceDetailsContainer w-full max-sm:w-[90%] text-white bg-cardBgBlue mt-6 rounded-xl p-14">
+        <div className="id w-[100%] max-sm:w-[90%]">
           <div className="detailsRow1 w-[100%] flex justify-between">
             <div>
               <h1 className="font-bold">#{invoiceData[index].id}</h1>
@@ -211,6 +214,29 @@ const InvoiceDetails = () => {
             </h1>
           </div>
         </div>
+      </div>
+      <div className="invoiceButtons hidden max-sm:mt-10 max-sm:flex max-sm:h-12">
+        <button
+          onClick={handleOpenModal}
+          className={`${invoiceButtonClass} bg-editButton`}
+        >
+          Edit
+        </button>
+        <button
+          className={`${invoiceButtonClass} bg-deleteButton`}
+          onClick={toggleDeleteModal}
+        >
+          Delete
+        </button>
+        {invoiceData[index].status !== "paid" && (
+          <button
+            className={`${invoiceButtonClass} ${paidButtonClass}`}
+            disabled={isPaid}
+            onClick={updatePaidStatus}
+          >
+            Mark as Paid
+          </button>
+        )}
       </div>
     </motion.div>
   );
