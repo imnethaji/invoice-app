@@ -140,7 +140,7 @@ const InvoiceDetails = () => {
       {/* Invoice Detail container starts */}
       <div className="invoiceDetailsContainer w-full max-sm:w-[90%] text-white bg-cardBgBlue mt-6 rounded-xl p-14">
         <div className="id w-[100%] max-sm:w-[90%]">
-          <div className="detailsRow1 w-[100%] flex justify-between">
+          <div className="detailsRow1 w-[100%] flex justify-between max-sm:flex-col max-sm:space-y-4">
             <div>
               <h1 className="font-bold">#{invoiceData[index].id}</h1>
               <p>{invoiceData[index].description}</p>
@@ -152,32 +152,34 @@ const InvoiceDetails = () => {
               <p className="">{invoiceData[index].senderAddress.country}</p>
             </div>
           </div>
-          <div className="detailsRow2 flex mt-4">
-            <div className="row2col1 w-[200px] flex flex-col justify-between">
-              <div>
-                <p>Invoice Date</p>
-                <p className="font-bold mt-2">
-                  {formatDate(invoiceData[index].createdAt)}
-                </p>
+          <div className="detailsRow2 flex mt-4 max-sm:flex-col">
+            <div className="flex">
+              <div className="row2col1 w-[200px] flex flex-col justify-between">
+                <div>
+                  <p>Invoice Date</p>
+                  <p className="font-bold mt-2">
+                    {formatDate(invoiceData[index].createdAt)}
+                  </p>
+                </div>
+                <div>
+                  <p>Payment Due</p>
+                  <p className="font-bold mt-2">
+                    {formatDate(invoiceData[index].paymentDue)}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p>Payment Due</p>
-                <p className="font-bold mt-2">
-                  {formatDate(invoiceData[index].paymentDue)}
+              <div className="h-[160px] w-[210px]">
+                <p>Bill To</p>
+                <p className="font-bold mb-2 mt-2">
+                  {invoiceData[index].clientName}
                 </p>
+                <p className="">{invoiceData[index].clientAddress.street}</p>
+                <p className="">{invoiceData[index].clientAddress.city}</p>
+                <p className="">{invoiceData[index].clientAddress.postCode}</p>
+                <p className="">{invoiceData[index].clientAddress.country}</p>
               </div>
             </div>
-            <div className="h-[160px] w-[210px]">
-              <p>Bill To</p>
-              <p className="font-bold mb-2 mt-2">
-                {invoiceData[index].clientName}
-              </p>
-              <p className="">{invoiceData[index].clientAddress.street}</p>
-              <p className="">{invoiceData[index].clientAddress.city}</p>
-              <p className="">{invoiceData[index].clientAddress.postCode}</p>
-              <p className="">{invoiceData[index].clientAddress.country}</p>
-            </div>
-            <div>
+            <div className="max-sm:mt-4">
               <p>Sent to</p>
               <p className="font-bold mt-2">{invoiceData[index].clientEmail}</p>
             </div>
@@ -203,7 +205,7 @@ const InvoiceDetails = () => {
               </li>
             ))}
           </ul>
-          <div className="tableFooter bg-[#0C0E16] flex justify-between items-center px-10 py-7 rounded-xl">
+          <div className="tableFooter bg-[#0C0E16] flex justify-between items-center px-10 py-7 rounded-b-lg">
             <p className="text-sm">Amount Due</p>
             <h1 className="text-right font-bold text-2xl">
               &#8377;{" "}
