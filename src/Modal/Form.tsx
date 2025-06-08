@@ -135,6 +135,10 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
     closeModal(); // or navigate back
   };
 
+  function publishInvoice() {
+    console.log(formData);
+  }
+
   return (
     <>
       <motion.div
@@ -428,6 +432,7 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
               <button
                 className="flex items-center font-bold text-white bg-purpleButton rounded-full ml-2 py-4 px-7 max-sm:ml-0"
                 type="submit"
+                onClick={publishInvoice}
               >
                 {mode == "new" ? "Save & Send" : "Update & Send"}
               </button>
