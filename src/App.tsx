@@ -20,7 +20,9 @@ function App() {
       .catch((error) => {
         setInvoices(INVOICE_DATA);
         console.error("Failed to fetch", error);
-        console.log("Loading default data.");
+        console.log(
+          "Failed connecting with server. Loading default local data."
+        );
       });
   }, []);
 
