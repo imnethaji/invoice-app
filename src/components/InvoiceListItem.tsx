@@ -2,11 +2,11 @@ import rightArrow from "../assets/icon-arrow-right.svg";
 import { useNavigate } from "react-router";
 
 interface Props {
-  invoiceID: string;
+  invoiceID: string | undefined;
   dueDate: string;
   clientName: string;
-  total: number;
-  paymentStatus: string;
+  total: number | undefined;
+  paymentStatus: string | undefined;
 }
 
 const InvoiceListItem = ({
@@ -22,7 +22,7 @@ const InvoiceListItem = ({
     navigate(`/${invoiceID}`);
   }
   let buttonClass = "bg-paidButton ml-10 w-[120px] p-3 rounded";
-  const titlePaymentStatus: string = paymentStatus.toUpperCase();
+  const titlePaymentStatus: string | undefined = paymentStatus?.toUpperCase();
 
   if (paymentStatus === "paid") {
     buttonClass = "bg-paidButton text-paidButton ml-10 w-[120px] p-3 rounded";
