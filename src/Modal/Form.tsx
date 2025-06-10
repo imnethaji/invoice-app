@@ -2,40 +2,24 @@ import deleteBin from "../assets/icon-delete.svg";
 import React, { useState } from "react";
 import Invoice from "../types/types";
 import { motion } from "framer-motion";
-
-export interface Item {
-  itemName?: string;
-  quantity?: string;
-  price?: string;
-}
-
-export interface AddressData {
-  street?: string;
-  city?: string;
-  postCode?: string;
-  country?: string;
-}
-
-export interface FormData {
-  id?: string;
-  status?: string;
-  senderAddress?: AddressData;
-  clientAddress?: AddressData;
-  clientName?: string;
-  clientEmail?: string;
-  createdAt?: string;
-  paymentTerms?: number;
-  description?: string;
-  items?: Item[];
-}
+import { FormData, AddressData, Item } from "../types/formTypes";
 
 interface formModalProp {
   closeModal: () => void;
   invoiceData?: Invoice | FormData;
   mode: "new" | "edit";
+  handleSubmit: (
+    e: React.FormEvent,
+    updatedInvoiceData: FormData
+  ) => Promise<void>;
 }
 
-const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
+const Form: React.FC<formModalProp> = ({
+  closeModal,
+  invoiceData,
+  mode,
+  handleSubmit,
+}) => {
   const dateNow = new Date().toISOString().slice(0, 10);
   const inputClasses = "bg-cardBgBlue h-14 rounded text-white pl-4 mb-6 mt-2";
 
@@ -54,10 +38,11 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
     },
     clientName: "",
     clientEmail: "",
+    paymentDue: "",
     createdAt: dateNow,
     paymentTerms: 30,
     description: "",
-    items: [{ itemName: "", quantity: "", price: "" }],
+    items: [{ itemName: "", quantity: 0, price: 0 }],
   };
 
   const [formData, setFormData] = useState<FormData>(
@@ -105,7 +90,7 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
       ...prevData,
       items: [
         ...(prevData.items ?? []),
-        { itemName: "", quantity: "", price: "" },
+        { itemName: "", quantity: 0, price: 0 },
       ],
     }));
   };
@@ -119,20 +104,6 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
         ),
       }));
     }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (mode === "new") {
-      // call function to create invoice
-      // await createInvoice(formData);
-    } else {
-      // call function to update invoice
-      // await updateInvoice(formData);
-    }
-
-    closeModal(); // or navigate back
   };
 
   function publishInvoice() {
@@ -156,7 +127,7 @@ const Form: React.FC<formModalProp> = ({ closeModal, invoiceData, mode }) => {
           transition={{ duration: 0.4, ease: "easeInOut" }}
           className="w-[800px] absolute top-0 left-0 mb-10 bg-[#10111d] p-10 rounded-xl mt-0"
           onClick={(e) => e.stopPropagation()}
-          onSubmit={handleSubmit}
+          onSubmit={(e) => handleSubmit(e, formData)}
         >
           <h1 className="font-bold text-[#DFE3FA] text-2xl">
             {mode === "edit" ? `#${formData.id}` : "New Invoice"}

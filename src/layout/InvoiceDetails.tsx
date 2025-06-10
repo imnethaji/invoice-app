@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Invoice from "../types/types";
+import { FormData } from "../types/formTypes";
 import leftArrow from "../assets/icon-arrow-left.svg";
 import Form from "../Modal/Form";
 import INVOICE_DATA from "../data file/data.json";
@@ -69,6 +70,15 @@ const InvoiceDetails = () => {
     setIsPaid(true);
   }
 
+  const handleFormUpdate = async (
+    e: React.FormEvent,
+    updatedInvoiceData: Invoice | FormData
+  ) => {
+    e.preventDefault();
+    console.log(updatedInvoiceData);
+    setIsEditingOn(false);
+  };
+
   return (
     <motion.div
       initial={{ x: "200%" }}
@@ -83,6 +93,7 @@ const InvoiceDetails = () => {
             closeModal={handleCloseModal}
             invoiceData={invoiceData[index]}
             mode="edit"
+            handleSubmit={handleFormUpdate}
           />
         )}
       </AnimatePresence>
