@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Invoice from "../types/types";
-import { FormData } from "../types/formTypes";
+import { InvoiceFormData } from "../types/formTypes";
 import leftArrow from "../assets/icon-arrow-left.svg";
 import Form from "../Modal/Form";
 import INVOICE_DATA from "../data file/data.json";
@@ -72,7 +72,7 @@ const InvoiceDetails = () => {
 
   const handleFormUpdate = async (
     e: React.FormEvent,
-    updatedInvoiceData: Invoice | FormData
+    updatedInvoiceData: Invoice | InvoiceFormData
   ) => {
     e.preventDefault();
     console.log(updatedInvoiceData);

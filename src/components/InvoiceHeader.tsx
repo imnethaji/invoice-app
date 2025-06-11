@@ -3,6 +3,7 @@ import plusIcon from "../assets/icon-plus.svg";
 import arrowIcon from "../assets/icon-arrow-down.svg";
 import Invoice from "../types/types";
 import Form from "../Modal/Form";
+import { InvoiceFormData } from "../types/formTypes";
 import FilterOptions from "./FilterOptions";
 import { AnimatePresence } from "framer-motion";
 
@@ -24,9 +25,16 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   selectedFilters,
 }) => {
   const [isEditingOn, setIsEditingOn] = useState(false);
-
-  function handleNewInvoice() {
-    setIsEditingOn(!isEditingOn);
+  const handleNewInvoice = async (
+    e: React.FormEvent,
+    updatedInvoiceData?: InvoiceFormData
+  ) => {
+    e.preventDefault();
+    console.log(updatedInvoiceData);
+    setIsEditingOn(false);
+  };
+  function handleCloseModal() {
+    setIsEditingOn(false);
   }
 
   const handleFilterOption = (status: string) => {
@@ -41,7 +49,13 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   return (
     <div className="flex w-screen items-center mt-20 justify-center">
       <AnimatePresence mode="wait">
-        {isEditingOn && <Form closeModal={handleNewInvoice} mode="new" />}
+        {isEditingOn && (
+          <Form
+            closeModal={handleCloseModal}
+            mode="new"
+            handleSubmit={handleNewInvoice}
+          />
+        )}
       </AnimatePresence>
       <div className="flex w-[80%] justify-between max-sm:flex-col max-sm:items-center">
         <div>

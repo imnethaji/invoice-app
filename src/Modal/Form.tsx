@@ -2,15 +2,15 @@ import deleteBin from "../assets/icon-delete.svg";
 import React, { useState } from "react";
 import Invoice from "../types/types";
 import { motion } from "framer-motion";
-import { FormData, AddressData, Item } from "../types/formTypes";
+import { InvoiceFormData, AddressData, Item } from "../types/formTypes";
 
 interface formModalProp {
   closeModal: () => void;
-  invoiceData?: Invoice | FormData;
+  invoiceData?: Invoice | InvoiceFormData;
   mode: "new" | "edit";
   handleSubmit: (
     e: React.FormEvent,
-    updatedInvoiceData: FormData
+    updatedInvoiceData: InvoiceFormData
   ) => Promise<void>;
 }
 
@@ -23,7 +23,7 @@ const Form: React.FC<formModalProp> = ({
   const dateNow = new Date().toISOString().slice(0, 10);
   const inputClasses = "bg-cardBgBlue h-14 rounded text-white pl-4 mb-6 mt-2";
 
-  const defaultFormData: FormData = {
+  const defaultFormData: InvoiceFormData = {
     senderAddress: {
       street: "",
       city: "",
@@ -45,18 +45,18 @@ const Form: React.FC<formModalProp> = ({
     items: [{ itemName: "", quantity: 0, price: 0 }],
   };
 
-  const [formData, setFormData] = useState<FormData>(
-    (invoiceData as FormData) || defaultFormData
+  const [formData, setFormData] = useState<InvoiceFormData>(
+    (invoiceData as InvoiceFormData) || defaultFormData
   );
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-    section: keyof FormData,
+    section: keyof InvoiceFormData,
     field?: keyof AddressData
   ) => {
     const { value } = e.target;
     if (field) {
-      setFormData((prevData: FormData) => ({
+      setFormData((prevData: InvoiceFormData) => ({
         ...prevData,
         [section]: { ...(prevData[section] as AddressData), [field]: value },
       }));

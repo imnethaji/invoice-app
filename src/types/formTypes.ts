@@ -11,7 +11,7 @@ export interface AddressData {
   country?: string;
 }
 
-export interface FormData {
+export interface InvoiceFormData {
   id?: string;
   status?: string;
   senderAddress?: AddressData;
