@@ -6,7 +6,7 @@ interface Props {
   dueDate: string;
   clientName: string;
   total: number | undefined;
-  paymentStatus: string | undefined;
+  paymentStatus: string;
 }
 
 const InvoiceListItem = ({

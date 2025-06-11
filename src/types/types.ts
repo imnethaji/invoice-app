@@ -20,7 +20,7 @@ interface Invoice {
   paymentTerms: number;
   clientName: string;
   clientEmail: string;
-  status?: string | undefined;
+  status: string;
   senderAddress: Address;
   clientAddress: Address;
   items: Item[];
