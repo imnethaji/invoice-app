@@ -31,7 +31,7 @@ const InvoiceHeader: React.FC<InvoiceHeaderProps> = ({
   ) => {
     e.preventDefault();
     console.log(updatedInvoiceData);
-    setIsEditingOn(false);
+    setIsEditingOn(!isEditingOn);
   };
   function handleCloseModal() {
     setIsEditingOn(false);
