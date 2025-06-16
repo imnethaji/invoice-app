@@ -1,32 +1,16 @@
 import "./App.css";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import InvoiceListItem from "./components/InvoiceListItem";
 import NoInvoice from "./components/NoInvoice";
-import INVOICE_DATA from "./data file/data.json";
-import Invoice from "./types/types";
 import InvoiceHeader from "./components/InvoiceHeader";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { fetchInvoices } from "./api/api";
+import { useInvoiceFilter } from "../src/context/useInvoiceFilter";
+import { useInvoiceData } from "./context/useInvoiceData";
 
 function App() {
-  // Fetch data from API if backend not active load default data
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
-  useEffect(() => {
-    fetchInvoices()
-      .then((data) => {
-        console.log("Connection with server successful.");
-        setInvoices(data);
-      })
-      .catch((error) => {
-        setInvoices(INVOICE_DATA);
-        console.error("Failed to fetch", error);
-        console.log(
-          "Failed connecting with server. Loading default local data."
-        );
-      });
-  }, []);
+  const { selectedFilters, setSelectedFilters } = useInvoiceFilter();
+  const { invoices } = useInvoiceData();
 
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [isFilterOn, setIsFilterOn] = useState(false);
 
   const filteredInvoiceData = useMemo(() => {

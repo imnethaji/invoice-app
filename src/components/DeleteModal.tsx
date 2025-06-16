@@ -1,17 +1,48 @@
 import { motion } from "framer-motion";
 import ModalBgDiv from "./ModalBgDiv";
+import { useEffect, useRef } from "react";
 
 interface DeleteModalProps {
   invoiceId: string | undefined;
   handleDeleteModalActions: (action: "cancel" | "delete") => void;
+  isActive: boolean;
+  onClose: () => void;
 }
 
 const DeleteModal: React.FC<DeleteModalProps> = ({
   invoiceId,
   handleDeleteModalActions,
+  isActive,
+  onClose,
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+
+    if (isActive) {
+      window.addEventListener("mousedown", handleClickOutside);
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isActive, onClose]);
+
   return (
     <ModalBgDiv
+      ref={modalRef}
       key={"delete-modal-bg"}
       onClick={() => handleDeleteModalActions("cancel")}
     >

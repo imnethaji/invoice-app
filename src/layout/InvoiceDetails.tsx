@@ -90,6 +90,7 @@ const InvoiceDetails = () => {
       <AnimatePresence mode="wait">
         {isEditingOn && (
           <Form
+            isActive={isEditingOn}
             closeModal={handleCloseModal}
             invoiceData={invoiceData[index]}
             mode="edit"
@@ -100,6 +101,8 @@ const InvoiceDetails = () => {
       <AnimatePresence>
         {isDeleteOn && (
           <DeleteModal
+            isActive={isDeleteOn}
+            onClose={toggleDeleteModal}
             invoiceId={invoiceId}
             handleDeleteModalActions={handleDeleteModalActions}
           />

@@ -1,5 +1,5 @@
 import deleteBin from "../assets/icon-delete.svg";
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Invoice from "../types/types";
 import { motion } from "framer-motion";
 import { InvoiceFormData, AddressData, Item } from "../types/formTypes";
@@ -7,6 +7,7 @@ import { InvoiceFormData, AddressData, Item } from "../types/formTypes";
 interface formModalProp {
   closeModal: () => void;
   invoiceData?: Invoice | InvoiceFormData;
+  isActive?: boolean;
   mode: "new" | "edit";
   handleSubmit: (
     e: React.FormEvent,
@@ -17,11 +18,37 @@ interface formModalProp {
 const Form: React.FC<formModalProp> = ({
   closeModal,
   invoiceData,
+  isActive,
   mode,
   handleSubmit,
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
   const dateNow = new Date().toISOString().slice(0, 10);
   const inputClasses = "bg-cardBgBlue h-14 rounded text-white pl-4 mb-6 mt-2";
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        closeModal();
+      }
+    };
+
+    if (isActive) {
+      window.addEventListener("mousedown", handleClickOutside);
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isActive, closeModal]);
 
   const defaultFormData: InvoiceFormData = {
     senderAddress: {
@@ -113,6 +140,7 @@ const Form: React.FC<formModalProp> = ({
   return (
     <>
       <motion.div
+        ref={modalRef}
         className="fixed inset-0 z-50 bg-black bg-opacity-60 flex items-start justify-center overflow-y-auto p-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

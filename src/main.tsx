@@ -5,9 +5,11 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import InvoiceDetails from "./layout/InvoiceDetails.tsx";
 import PageNotFound from "./layout/PageNotFound.tsx";
+import { InvoiceDataProvider } from "./context/InvoiceDataContext.tsx";
+import { InvoiceFilterProvider } from "./context/InvoiceFilterContext.tsx";
 
 const router = createBrowserRouter([
-  { path: "/", Component: App, errorElement: <PageNotFound /> },
+  { path: "/", element: <App />, errorElement: <PageNotFound /> },
   {
     path: "/:invoiceId",
     element: <InvoiceDetails />,
@@ -17,6 +19,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <InvoiceDataProvider>
+      <InvoiceFilterProvider>
+        <RouterProvider router={router} />
+      </InvoiceFilterProvider>
+    </InvoiceDataProvider>
   </React.StrictMode>
 );
