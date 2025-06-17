@@ -3,28 +3,35 @@ import Invoice from "../types/types";
 import { InvoiceFormData } from "../types/formTypes";
 import leftArrow from "../assets/icon-arrow-left.svg";
 import Form from "../Modal/Form";
-import INVOICE_DATA from "../data file/data.json";
 import { useParams, useNavigate } from "react-router";
 import DeleteModal from "../components/DeleteModal";
 import { AnimatePresence, motion } from "framer-motion";
-const invoiceData: Invoice[] = INVOICE_DATA;
+import { useInvoiceData } from "../context/useInvoiceData";
 
 const InvoiceDetails = () => {
+  const { invoices, setInvoices } = useInvoiceData();
   const navigate = useNavigate();
   const { invoiceId } = useParams();
-  const index = invoiceData.findIndex((item) => item.id === invoiceId);
+  const invoice = invoices.find((item) => item.id === invoiceId);
   const [isEditingOn, setIsEditingOn] = useState(false);
   const [isDeleteOn, setIsDeleteOn] = useState(false);
-  const [isPaid, setIsPaid] = useState(
-    invoiceData[index].status === "paid" ? true : false
-  );
+  const [isPaid, setIsPaid] = useState(invoice?.status === "paid");
+
+  if (!invoice) {
+    navigate("/");
+    return;
+  }
 
   function toggleDeleteModal() {
     setIsDeleteOn(!isDeleteOn);
   }
   function handleDeleteModalActions(action: "cancel" | "delete") {
-    if (action == "cancel") {
-      setIsDeleteOn(!isDeleteOn);
+    if (action === "cancel") {
+      setIsDeleteOn((prev) => !prev);
+    } else if (action === "delete") {
+      const updatedInvoices = invoices.filter((item) => item.id !== invoiceId);
+      setInvoices(updatedInvoices);
+      navigate("/");
     }
   }
   let paidButtonClass = `bg-purpleButton`;
@@ -36,7 +43,7 @@ const InvoiceDetails = () => {
   if (isPaid) {
     statusColor = "bg-paidButton text-paidButton";
     paidButtonClass = "bg-editButton text-grey";
-  } else if (invoiceData[index].status === "pending") {
+  } else if (invoice.status === "pending") {
     statusColor = "bg-pendingButton text-pendingButton";
   } else {
     statusColor = "bg-draftButton text-draftButton";
@@ -65,8 +72,12 @@ const InvoiceDetails = () => {
   }
 
   function updatePaidStatus() {
-    if (invoiceData[index].status == "draft") return;
-    invoiceData[index].status = "paid";
+    if (invoice?.status === "draft") return;
+    setInvoices((prevInvoices) =>
+      prevInvoices.map((invoice) =>
+        invoice.id === invoiceId ? { ...invoice, status: "paid" } : invoice
+      )
+    );
     setIsPaid(true);
   }
 
@@ -92,7 +103,7 @@ const InvoiceDetails = () => {
           <Form
             isActive={isEditingOn}
             closeModal={handleCloseModal}
-            invoiceData={invoiceData[index]}
+            invoiceData={invoice}
             mode="edit"
             handleSubmit={handleFormUpdate}
           />
@@ -124,7 +135,7 @@ const InvoiceDetails = () => {
           <p className="text-white">Status</p>
           <button disabled className={`${buttonClass} ${statusColor}`}>
             <div className={`${statusColor} w-2 h-2 mr-2 rounded-full`}></div>
-            {invoiceData[index].status}
+            {invoice?.status}
           </button>
         </div>
         <div className="invoiceButtons max-sm:hidden">
@@ -140,7 +151,7 @@ const InvoiceDetails = () => {
           >
             Delete
           </button>
-          {invoiceData[index].status !== "paid" && (
+          {invoice?.status !== "paid" && (
             <button
               className={`${invoiceButtonClass} ${paidButtonClass}`}
               disabled={isPaid}
@@ -156,14 +167,14 @@ const InvoiceDetails = () => {
         <div className="id w-[100%] max-sm:w-[90%]">
           <div className="detailsRow1 w-[100%] flex justify-between max-sm:flex-col max-sm:space-y-4">
             <div>
-              <h1 className="font-bold">#{invoiceData[index].id}</h1>
-              <p>{invoiceData[index].description}</p>
+              <h1 className="font-bold">#{invoice?.id}</h1>
+              <p>{invoice?.description}</p>
             </div>
             <div>
-              <p className="">{invoiceData[index].senderAddress.street}</p>
-              <p className="">{invoiceData[index].senderAddress.city}</p>
-              <p className="">{invoiceData[index].senderAddress.postCode}</p>
-              <p className="">{invoiceData[index].senderAddress.country}</p>
+              <p className="">{invoice?.senderAddress.street}</p>
+              <p className="">{invoice?.senderAddress.city}</p>
+              <p className="">{invoice?.senderAddress.postCode}</p>
+              <p className="">{invoice?.senderAddress.country}</p>
             </div>
           </div>
           <div className="detailsRow2 flex mt-4 max-sm:flex-col">
@@ -172,30 +183,28 @@ const InvoiceDetails = () => {
                 <div>
                   <p>Invoice Date</p>
                   <p className="font-bold mt-2">
-                    {formatDate(invoiceData[index].createdAt)}
+                    {formatDate(invoice?.createdAt)}
                   </p>
                 </div>
                 <div>
                   <p>Payment Due</p>
                   <p className="font-bold mt-2">
-                    {formatDate(invoiceData[index].paymentDue)}
+                    {formatDate(invoice?.paymentDue)}
                   </p>
                 </div>
               </div>
               <div className="h-[160px] w-[210px]">
                 <p>Bill To</p>
-                <p className="font-bold mb-2 mt-2">
-                  {invoiceData[index].clientName}
-                </p>
-                <p className="">{invoiceData[index].clientAddress.street}</p>
-                <p className="">{invoiceData[index].clientAddress.city}</p>
-                <p className="">{invoiceData[index].clientAddress.postCode}</p>
-                <p className="">{invoiceData[index].clientAddress.country}</p>
+                <p className="font-bold mb-2 mt-2">{invoice.clientName}</p>
+                <p className="">{invoice.clientAddress.street}</p>
+                <p className="">{invoice.clientAddress.city}</p>
+                <p className="">{invoice.clientAddress.postCode}</p>
+                <p className="">{invoice.clientAddress.country}</p>
               </div>
             </div>
             <div className="max-sm:mt-4">
               <p>Sent to</p>
-              <p className="font-bold mt-2">{invoiceData[index].clientEmail}</p>
+              <p className="font-bold mt-2">{invoice.clientEmail}</p>
             </div>
           </div>
         </div>
@@ -207,7 +216,7 @@ const InvoiceDetails = () => {
             <div className="text-right">Total</div>
           </div>
           <ul>
-            {invoiceData[index].items.map((item, index) => (
+            {invoice.items.map((item, index) => (
               <li
                 key={index}
                 className="tableRow grid grid-cols-4 text-right mb-10 px-10 font-bold"
@@ -223,10 +232,7 @@ const InvoiceDetails = () => {
             <p className="text-sm">Amount Due</p>
             <h1 className="text-right font-bold text-2xl">
               &#8377;{" "}
-              {invoiceData[index].items.reduce(
-                (acc, item) => (acc += item.total),
-                0
-              )}
+              {invoice.items.reduce((acc, item) => (acc += item.total), 0)}
             </h1>
           </div>
         </div>
@@ -244,7 +250,7 @@ const InvoiceDetails = () => {
         >
           Delete
         </button>
-        {invoiceData[index].status !== "paid" && (
+        {invoice.status !== "paid" && (
           <button
             className={`${invoiceButtonClass} ${paidButtonClass}`}
             disabled={isPaid}

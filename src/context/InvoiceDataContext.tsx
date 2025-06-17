@@ -10,6 +10,7 @@ interface InvoiceDataContextType {
   invoices: Invoice[];
   loading: boolean;
   error: string | null;
+  setInvoices: React.Dispatch<React.SetStateAction<Invoice[]>>;
 }
 
 export const InvoiceDataContext = createContext<
@@ -40,7 +41,9 @@ export const InvoiceDataProvider: React.FC<
   }, []);
 
   return (
-    <InvoiceDataContext.Provider value={{ invoices, loading, error }}>
+    <InvoiceDataContext.Provider
+      value={{ invoices, loading, error, setInvoices }}
+    >
       {children}
     </InvoiceDataContext.Provider>
   );
