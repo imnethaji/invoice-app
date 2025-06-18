@@ -1,15 +1,16 @@
 import "./App.css";
 import { useMemo, useState } from "react";
 import InvoiceListItem from "./components/InvoiceListItem";
-import NoInvoice from "./components/NoInvoice";
 import InvoiceHeader from "./components/InvoiceHeader";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { useInvoiceFilter } from "../src/context/useInvoiceFilter";
 import { useInvoiceData } from "./context/useInvoiceData";
+import LoadingSkeleton from "./components/LoadingSkeleton";
+import NoInvoice from "./components/NoInvoice";
 
 function App() {
   const { selectedFilters, setSelectedFilters } = useInvoiceFilter();
-  const { invoices } = useInvoiceData();
+  const { invoices, loading } = useInvoiceData();
 
   const [isFilterOn, setIsFilterOn] = useState(false);
 
@@ -80,7 +81,9 @@ function App() {
             selectedFilters={selectedFilters}
             filteredInvoiceData={filteredInvoiceData}
           />
-          {filteredInvoiceData.length === 0 ? (
+          {loading ? (
+            <LoadingSkeleton />
+          ) : filteredInvoiceData.length === 0 ? (
             <NoInvoice />
           ) : (
             <motion.div

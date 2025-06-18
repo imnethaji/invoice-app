@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Invoice from "../types/types";
 import { InvoiceFormData } from "../types/formTypes";
 import leftArrow from "../assets/icon-arrow-left.svg";
@@ -15,38 +15,69 @@ const InvoiceDetails = () => {
   const invoice = invoices.find((item) => item.id === invoiceId);
   const [isEditingOn, setIsEditingOn] = useState(false);
   const [isDeleteOn, setIsDeleteOn] = useState(false);
-  const [isPaid, setIsPaid] = useState(invoice?.status === "paid");
+  const [deleteProgress, setDeleteProgress] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [isPaid, setIsPaid] = useState(() => {
+    return invoice?.status === "paid" || false;
+  });
 
-  if (!invoice) {
-    navigate("/");
-    return;
-  }
-
-  function toggleDeleteModal() {
-    setIsDeleteOn(!isDeleteOn);
-  }
-  function handleDeleteModalActions(action: "cancel" | "delete") {
-    if (action === "cancel") {
-      setIsDeleteOn((prev) => !prev);
-    } else if (action === "delete") {
-      const updatedInvoices = invoices.filter((item) => item.id !== invoiceId);
-      setInvoices(updatedInvoices);
+  useEffect(() => {
+    if (!invoice) {
       navigate("/");
     }
-  }
+  }, [invoice, navigate]);
+
   let paidButtonClass = `bg-purpleButton`;
   const buttonClass =
     "flex items-center  justify-center ml-10 w-[120px] p-3 rounded bg-opacity-20 font-bold text-md";
   let statusColor = "";
   const invoiceButtonClass = "text-white rounded-full ml-4 font-bold px-8 py-4";
+
   // Status color changing depending on paid status
   if (isPaid) {
     statusColor = "bg-paidButton text-paidButton";
     paidButtonClass = "bg-editButton text-grey";
-  } else if (invoice.status === "pending") {
+  } else if (invoice?.status === "pending") {
     statusColor = "bg-pendingButton text-pendingButton";
   } else {
     statusColor = "bg-draftButton text-draftButton";
+  }
+
+  function toggleDeleteModal() {
+    setIsDeleteOn(!isDeleteOn);
+  }
+
+  function handleDeleteModalActions(action: "cancel" | "delete") {
+    if (action === "cancel") {
+      setIsDeleteOn(false);
+    } else if (action === "delete") {
+      setDeleteProgress(true);
+      setIsDeleteOn(true);
+      setShowSuccess(false);
+
+      // Simulating API call
+      setTimeout(() => {
+        try {
+          // Update invoices
+          const updatedInvoices = invoices.filter(
+            (item) => item.id !== invoiceId
+          );
+          setInvoices(updatedInvoices);
+
+          // Update UI states
+          setDeleteProgress(false);
+          setIsDeleteOn(false);
+          setShowSuccess(true);
+
+          // If you want to navigate, do it here
+          // navigate("/");
+        } catch (error) {
+          setDeleteProgress(false);
+          setIsDeleteOn(false);
+          console.error("Failed to delete invoice:", error);
+        }
+      }, 2000);
+    }
   }
 
   const formatDate = (dateString: string) => {
@@ -112,9 +143,11 @@ const InvoiceDetails = () => {
       <AnimatePresence>
         {isDeleteOn && (
           <DeleteModal
+            showSuccess={showSuccess}
             isActive={isDeleteOn}
             onClose={toggleDeleteModal}
             invoiceId={invoiceId}
+            deleteProgress={deleteProgress}
             handleDeleteModalActions={handleDeleteModalActions}
           />
         )}
@@ -195,16 +228,16 @@ const InvoiceDetails = () => {
               </div>
               <div className="h-[160px] w-[210px]">
                 <p>Bill To</p>
-                <p className="font-bold mb-2 mt-2">{invoice.clientName}</p>
-                <p className="">{invoice.clientAddress.street}</p>
-                <p className="">{invoice.clientAddress.city}</p>
-                <p className="">{invoice.clientAddress.postCode}</p>
-                <p className="">{invoice.clientAddress.country}</p>
+                <p className="font-bold mb-2 mt-2">{invoice?.clientName}</p>
+                <p className="">{invoice?.clientAddress.street}</p>
+                <p className="">{invoice?.clientAddress.city}</p>
+                <p className="">{invoice?.clientAddress.postCode}</p>
+                <p className="">{invoice?.clientAddress.country}</p>
               </div>
             </div>
             <div className="max-sm:mt-4">
               <p>Sent to</p>
-              <p className="font-bold mt-2">{invoice.clientEmail}</p>
+              <p className="font-bold mt-2">{invoice?.clientEmail}</p>
             </div>
           </div>
         </div>
@@ -216,7 +249,7 @@ const InvoiceDetails = () => {
             <div className="text-right">Total</div>
           </div>
           <ul>
-            {invoice.items.map((item, index) => (
+            {invoice?.items.map((item, index) => (
               <li
                 key={index}
                 className="tableRow grid grid-cols-4 text-right mb-10 px-10 font-bold"
@@ -232,7 +265,7 @@ const InvoiceDetails = () => {
             <p className="text-sm">Amount Due</p>
             <h1 className="text-right font-bold text-2xl">
               &#8377;{" "}
-              {invoice.items.reduce((acc, item) => (acc += item.total), 0)}
+              {invoice?.items.reduce((acc, item) => (acc += item.total), 0)}
             </h1>
           </div>
         </div>
@@ -250,7 +283,7 @@ const InvoiceDetails = () => {
         >
           Delete
         </button>
-        {invoice.status !== "paid" && (
+        {invoice?.status !== "paid" && (
           <button
             className={`${invoiceButtonClass} ${paidButtonClass}`}
             disabled={isPaid}

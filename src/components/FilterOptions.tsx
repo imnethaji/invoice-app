@@ -14,9 +14,9 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
   return (
     <motion.div
       key={"filterOptionDiv"}
-      initial={{ opacity: 0, scale: 0.3 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.3 }}
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 100 }}
       transition={{ duration: 0.2 }}
       className="absolute top-12 w-40 left-0 bg-[#252945] p-4 rounded-lg space-y-2 shadow-lg z-10"
     >
