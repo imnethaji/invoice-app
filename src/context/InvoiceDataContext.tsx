@@ -37,7 +37,7 @@ const InvoiceDataProvider = ({ children }: { children: React.ReactNode }) => {
         setInvoices(response.data);
       } catch (err) {
         setError("Failed to fetch from server. Using fallback.");
-        setInvoices(INVOICE_DATA);
+        setInvoices(INVOICE_DATA as Invoice[]);
       } finally {
         setTimeout(() => {
           setLoading(false);

@@ -216,13 +216,15 @@ const InvoiceDetails = () => {
                 <div>
                   <p>Invoice Date</p>
                   <p className="font-bold mt-2">
-                    {formatDate(invoice?.createdAt)}
+                    {invoice?.createdAt ? formatDate(invoice.createdAt) : "N/A"}
                   </p>
                 </div>
                 <div>
                   <p>Payment Due</p>
                   <p className="font-bold mt-2">
-                    {formatDate(invoice?.paymentDue)}
+                    {invoice?.paymentDue
+                      ? formatDate(invoice.paymentDue)
+                      : "N/A"}
                   </p>
                 </div>
               </div>
