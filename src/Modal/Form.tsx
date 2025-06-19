@@ -3,6 +3,8 @@ import React, { useEffect, useState, useRef } from "react";
 import Invoice from "../types/types";
 import { motion } from "framer-motion";
 import { InvoiceFormData, AddressData, Item } from "../types/formTypes";
+import generateInvoiceId from "../util/invoiceIdGenerator";
+import { useInvoiceData } from "../context/useInvoiceData";
 
 interface formModalProp {
   closeModal: () => void;
@@ -22,6 +24,7 @@ const Form: React.FC<formModalProp> = ({
   mode,
   handleSubmit,
 }) => {
+  const { invoices, setInvoices } = useInvoiceData();
   const modalRef = useRef<HTMLDivElement>(null);
   const dateNow = new Date().toISOString().slice(0, 10);
   const inputClasses = "bg-cardBgBlue h-14 rounded text-white pl-4 mb-6 mt-2";
@@ -133,8 +136,109 @@ const Form: React.FC<formModalProp> = ({
     }
   };
 
-  function publishInvoice() {
-    console.log(formData);
+  function handleFormSubmit(mode: "new" | "edit") {
+    if (mode === "new") {
+      const newInvoice: Invoice = {
+        id: generateInvoiceId(),
+        createdAt: new Date().toISOString(),
+        paymentDue: formData.paymentDue ?? "",
+        description: formData.description ?? "",
+        paymentTerms: formData.paymentTerms ?? 30,
+        clientName: formData.clientName ?? "",
+        clientEmail: formData.clientEmail ?? "",
+        status: (formData.status as "paid" | "pending" | "draft") ?? "pending",
+        senderAddress: {
+          street: formData.senderAddress?.street ?? "",
+          city: formData.senderAddress?.city ?? "",
+          postCode: formData.senderAddress?.postCode ?? "",
+          country: formData.senderAddress?.country ?? "",
+        },
+        clientAddress: {
+          street: formData.clientAddress?.street ?? "",
+          city: formData.clientAddress?.city ?? "",
+          postCode: formData.clientAddress?.postCode ?? "",
+          country: formData.clientAddress?.country ?? "",
+        },
+        items:
+          formData.items?.map((item) => ({
+            itemName: item.itemName ?? "",
+            quantity: item.quantity ?? 0,
+            price: item.price ?? 0,
+            total: (item.quantity ?? 0) * (item.price ?? 0),
+          })) ?? [],
+        total:
+          formData.items?.reduce((sum, item) => {
+            return sum + (item.quantity ?? 0) * (item.price ?? 0);
+          }, 0) ?? 0,
+      };
+
+      setInvoices((prev) => [...prev, newInvoice]);
+    } else {
+      // edit mode
+      const currentInvoiceIndex = invoices.findIndex(
+        (invoice) => invoice.id === formData.id
+      );
+
+      setInvoices((prev) =>
+        prev.map((invoice, index) => {
+          if (index === currentInvoiceIndex) {
+            const updatedInvoice: Invoice = {
+              id: formData.id ?? invoice.id,
+              createdAt: formData.createdAt ?? invoice.createdAt,
+              paymentDue: formData.paymentDue ?? invoice.paymentDue,
+              description: formData.description ?? invoice.description,
+              paymentTerms: formData.paymentTerms ?? invoice.paymentTerms,
+              clientName: formData.clientName ?? invoice.clientName,
+              clientEmail: formData.clientEmail ?? invoice.clientEmail,
+              status:
+                (formData.status as "paid" | "pending" | "draft") ??
+                invoice.status,
+              senderAddress: {
+                street:
+                  formData.senderAddress?.street ??
+                  invoice.senderAddress.street,
+                city:
+                  formData.senderAddress?.city ?? invoice.senderAddress.city,
+                postCode:
+                  formData.senderAddress?.postCode ??
+                  invoice.senderAddress.postCode,
+                country:
+                  formData.senderAddress?.country ??
+                  invoice.senderAddress.country,
+              },
+              clientAddress: {
+                street:
+                  formData.clientAddress?.street ??
+                  invoice.clientAddress.street,
+                city:
+                  formData.clientAddress?.city ?? invoice.clientAddress.city,
+                postCode:
+                  formData.clientAddress?.postCode ??
+                  invoice.clientAddress.postCode,
+                country:
+                  formData.clientAddress?.country ??
+                  invoice.clientAddress.country,
+              },
+              items:
+                formData.items?.map((item) => ({
+                  itemName: item.itemName ?? "",
+                  quantity: item.quantity ?? 0,
+                  price: item.price ?? 0,
+                  total: (item.quantity ?? 0) * (item.price ?? 0),
+                })) ?? invoice.items,
+              total:
+                formData.items?.reduce(
+                  (sum, item) => sum + (item.quantity ?? 0) * (item.price ?? 0),
+                  0
+                ) ?? invoice.total,
+            };
+
+            return updatedInvoice;
+          }
+          return invoice;
+        })
+      );
+    }
   }
 
   return (
@@ -173,7 +277,7 @@ const Form: React.FC<formModalProp> = ({
             <input
               className={inputClasses + " w-full"}
               type="text"
-              name="streetAddress"
+              name="address-line"
               id="streetAddress"
               value={formData.senderAddress?.street}
               onChange={(e) => handleChange(e, "senderAddress", "street")}
@@ -431,7 +535,7 @@ const Form: React.FC<formModalProp> = ({
               <button
                 className="flex items-center font-bold text-white bg-purpleButton rounded-full ml-2 py-4 px-7 max-sm:ml-0"
                 type="submit"
-                onClick={publishInvoice}
+                onClick={() => handleFormSubmit(mode)}
               >
                 {mode == "new" ? "Save & Send" : "Update & Send"}
               </button>
