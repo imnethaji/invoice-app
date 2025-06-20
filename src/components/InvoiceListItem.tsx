@@ -35,24 +35,24 @@ const InvoiceListItem = ({
   return (
     <>
       <div className="flex w-screen justify-center mt-5 mb-5 box-border">
-        <div className="w-[80%] flex justify-between bg-invoiceTab p-5 rounded-xl text-white transition-all max-sm:h-[200px] max-sm:w-[87%] max-xm:hover:w-[90%]">
+        <div
+          className="w-[80%] flex justify-between bg-invoiceTab p-5 rounded-xl text-white transition-all max-sm:h-[200px] max-sm:w-[87%] max-xm:hover:w-[90%] onClick={openInvoice} hover:cursor-pointer hover:scale-[1.01] transition-all"
+          onClick={openInvoice}
+        >
           <div className="flex items-center max-sm:space-x-0 max-sm:flex-col max-sm:justify-between max-sm:items-start">
             <h1 className="font-bold w-[5em]">#{invoiceID}</h1>
             <p className="w-[8em]">Due {dueDate}</p>
             <p>{clientName}</p>
           </div>
           <div className="flex items-center max-sm:flex-col max-sm:justify-between max-sm:items-center">
-            <h1 className="font-bold">&#8377;{total}</h1>
+            <h1 className="font-bold">&#8377;{total?.toFixed(2)}</h1>
             <button
               disabled
               className={`${buttonClass} font-bold bg-opacity-20 max-sm:ml-0`}
             >
               {titlePaymentStatus}
             </button>
-            <div
-              onClick={openInvoice}
-              className="p-2 ml-4 max-sm:ml-0 w-10 h-10 flex items-center justify-center hover:bg-white hover:cursor-pointer rounded-full transition-colors hover:bg-opacity-70"
-            >
+            <div className="p-2 ml-4 max-sm:ml-0 w-10 h-10 flex items-center justify-center">
               <img className=" w-3" src={rightArrow} alt="" />
             </div>
           </div>

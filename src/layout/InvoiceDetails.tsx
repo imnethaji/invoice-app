@@ -4,7 +4,7 @@ import { InvoiceFormData } from "../types/formTypes";
 import leftArrow from "../assets/icon-arrow-left.svg";
 import Form from "../Modal/Form";
 import { useParams, useNavigate } from "react-router";
-import DeleteModal from "../components/DeleteModal";
+import DeleteModal from "../Modal/DeleteModal";
 import { AnimatePresence, motion } from "framer-motion";
 import { useInvoiceData } from "../context/useInvoiceData";
 
@@ -15,15 +15,14 @@ const InvoiceDetails = () => {
   const invoice = invoices.find((item) => item.id === invoiceId);
   const [isEditingOn, setIsEditingOn] = useState(false);
   const [isDeleteOn, setIsDeleteOn] = useState(false);
-  const [deleteProgress, setDeleteProgress] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+
   const [isPaid, setIsPaid] = useState(() => {
     return invoice?.status === "paid" || false;
   });
 
   useEffect(() => {
     if (!invoice) {
-      navigate("/");
+      // navigate("/");
     }
   }, [invoice, navigate]);
 
@@ -47,37 +46,10 @@ const InvoiceDetails = () => {
     setIsDeleteOn(!isDeleteOn);
   }
 
-  function handleDeleteModalActions(action: "cancel" | "delete") {
-    if (action === "cancel") {
-      setIsDeleteOn(false);
-    } else if (action === "delete") {
-      setDeleteProgress(true);
-      setIsDeleteOn(true);
-      setShowSuccess(false);
-
-      // Simulating API call
-      setTimeout(() => {
-        try {
-          // Update invoices
-          const updatedInvoices = invoices.filter(
-            (item) => item.id !== invoiceId
-          );
-          setInvoices(updatedInvoices);
-
-          // Update UI states
-          setDeleteProgress(false);
-          setIsDeleteOn(false);
-          setShowSuccess(true);
-
-          // If you want to navigate, do it here
-          // navigate("/");
-        } catch (error) {
-          setDeleteProgress(false);
-          setIsDeleteOn(false);
-          console.error("Failed to delete invoice:", error);
-        }
-      }, 2000);
-    }
+  function handleDeleteInvoice() {
+    const updatedInvoices = invoices.filter((item) => item.id !== invoiceId);
+    setInvoices(updatedInvoices);
+    setIsDeleteOn(!isDeleteOn);
   }
 
   const formatDate = (dateString: string) => {
@@ -143,12 +115,11 @@ const InvoiceDetails = () => {
       <AnimatePresence>
         {isDeleteOn && (
           <DeleteModal
-            showSuccess={showSuccess}
             isActive={isDeleteOn}
             onClose={toggleDeleteModal}
             invoiceId={invoiceId}
-            deleteProgress={deleteProgress}
-            handleDeleteModalActions={handleDeleteModalActions}
+            handleCloseModal={handleCloseModal}
+            handleDeleteInvoice={handleDeleteInvoice}
           />
         )}
       </AnimatePresence>
@@ -258,8 +229,8 @@ const InvoiceDetails = () => {
               >
                 <div className="text-left">{item.itemName}</div>
                 <div className="text-center">{item.quantity}</div>
-                <div>&#8377; {item.price}</div>
-                <div>&#8377; {item.total}</div>
+                <div>&#8377; {Number(item.price).toFixed(2)}</div>
+                <div>&#8377; {Number(item.total).toFixed(2)}</div>
               </li>
             ))}
           </ul>
@@ -267,7 +238,9 @@ const InvoiceDetails = () => {
             <p className="text-sm">Amount Due</p>
             <h1 className="text-right font-bold text-2xl">
               &#8377;{" "}
-              {invoice?.items.reduce((acc, item) => (acc += item.total), 0)}
+              {invoice?.items
+                .reduce((acc, item) => (acc += item.total), 0)
+                .toFixed(2)}
             </h1>
           </div>
         </div>
