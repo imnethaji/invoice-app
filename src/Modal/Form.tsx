@@ -492,9 +492,11 @@ const Form: React.FC<formModalProp> = ({
                     onChange={(e) => handleItemChange(e, index, "price")}
                   />
                   <div className="flex items-center mb-6 mt-2">
-                    <h1 className="font-bold text-white ">
-                      {Number(formData.items?.[index].quantity) *
-                        Number(formData.items?.[index].price)}
+                    <h1 className="font-bold text-white">
+                      {(
+                        Number(formData.items?.[index].quantity) *
+                        Number(formData.items?.[index].price)
+                      ).toFixed(2)}
                     </h1>
                   </div>
                   <div className="flex items-center justify-center mb-6 mt-2">
